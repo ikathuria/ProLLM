@@ -6,10 +6,10 @@ description: >
   technical feasibility, and monetization — synthesized into a RESEARCH.md with an honest
   build / don't-build verdict. Trigger when the user asks "is this feasible", "is there a
   market for this", "who are the competitors", "can this make money", "validate this idea",
-  or wants market/demand research on any idea or existing product. Invoked explicitly
-  (/idea-research), it runs DEEP mode with parallel research subagents; when called by
-  another skill (e.g. project-planner) or when the user asks for a quick check, it runs
-  QUICK mode inline without subagents.
+  or wants market/demand research on any idea or existing product. Runs DEEP mode by
+  default — parallel research subagents — whether invoked explicitly (/idea-research) or
+  by another skill (e.g. project-planner). Runs QUICK mode (inline, no subagents) only
+  when the user explicitly asks for a quick/light check.
 ---
 
 # Idea Research Skill
@@ -18,10 +18,10 @@ Researches whether an idea is worth building. Output: a `RESEARCH.md` report (te
 
 ## Mode selection — decide this first
 
-- **DEEP** — the user invoked `/idea-research` explicitly, or asked for thorough/serious validation. Fan out parallel research subagents (Phase 2A).
-- **QUICK** — another skill invoked this one (e.g. project-planner's research phase), or the user asked for a quick take. No subagents; run the condensed inline flow (Phase 2B). Same output files, lighter evidence.
+- **DEEP (default)** — fan out parallel research subagents (Phase 2A). This is the default whether the user invoked `/idea-research` directly or another skill (e.g. project-planner) invoked it.
+- **QUICK** — only when the user explicitly asked for a quick/light check, or subagents are unavailable in the environment. No subagents; run the condensed inline flow (Phase 2B). Same output files, lighter evidence — and say in the verdict that it was a quick pass.
 
-Deep mode is a multi-minute, search-heavy run. If the user invoked it explicitly, that's the contract — don't downgrade to quick without telling them.
+Deep mode is a multi-minute, search-heavy run — that's the contract. Don't silently downgrade to quick; if you must (e.g. no subagent capability), tell the user.
 
 ---
 
@@ -55,6 +55,23 @@ Launch rules:
 - **All five in a single message** so they run in parallel (general-purpose agents; they need WebSearch/WebFetch).
 - Each prompt must be fully self-contained — subagents do not see this conversation.
 - Do not edit the schema or honesty rules when composing prompts; they're what makes reports mergeable and trustworthy.
+
+### Model and effort per agent
+
+Pass a `model` on each Agent launch and append a budget line to each prompt. Defaults:
+
+| Agent | Model | Budget line to append |
+|---|---|---|
+| Competitor | sonnet | "Budget: ~20–25 searches/fetches. Depth on the top 3–5 players beats breadth." |
+| Community | sonnet | "Budget: ~20–25 searches/fetches. Prioritize fetching full threads over collecting more links." |
+| Video demand | haiku | "Budget: ~10–15 searches. Metadata collection only — don't over-analyze." |
+| News & trends | sonnet | "Budget: ~15–20 searches/fetches." |
+| Feasibility | sonnet | "Budget: ~20–25 searches/fetches. Fetch real pricing pages; secondhand pricing is stale." |
+
+- Every budget line ends with: "Stop early when marginal results start repeating what you already have."
+- Rationale: video work is mechanical metadata collection (haiku is enough); the others need judgment about evidence quality (sonnet). There is no native "effort" knob on subagents — the budget line IS the effort control.
+- **Escalation:** if the user signals high stakes ("considering quitting my job", "about to raise money"), omit `model` so agents inherit the main session's model, and raise budgets ~50%.
+- If a named model is unavailable in the environment, omit `model` and let agents inherit.
 
 ## Phase 2B: QUICK mode — inline research
 

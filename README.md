@@ -7,7 +7,7 @@ Skills for creating projects with LLMs. Each top-level folder is a self-containe
 | Skill | What it does |
 |---|---|
 | [`project-planner`](project-planner/) | Turns a raw idea into a Claude Code-ready build plan: research, free-first tech stack selection, milestone breakdown with testable tasks, and a `PLAN.md` + `PROJECT.md` pair structured for autonomous execution. Delegates research to `idea-research` when installed. |
-| [`idea-research`](idea-research/) | Multi-agent idea validation. Invoked as `/idea-research`, it fans out five parallel research agents — competitors, community pain (Reddit/HN), video demand (YouTube), news & search trends, technical feasibility — and synthesizes a `RESEARCH.md` with an honest build / don't-build verdict. Runs a lighter inline mode when called by `project-planner`. |
+| [`idea-research`](idea-research/) | Multi-agent idea validation. Fans out five parallel research agents — competitors, community pain (Reddit/HN), video demand (YouTube), news & search trends, technical feasibility — with per-agent model and search-budget tuning, synthesized into a `RESEARCH.md` with an honest build / don't-build verdict. A quick inline mode is available on request. |
 
 The skills compose: `project-planner` invokes `idea-research` for its research phase when both are installed, but each works standalone.
 

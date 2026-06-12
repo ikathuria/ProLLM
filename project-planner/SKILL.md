@@ -36,7 +36,7 @@ Do NOT proceed to Phase 2 until you have enough to answer these. It's OK to infe
 
 ## Phase 2: Research
 
-**If the `idea-research` skill is installed, invoke it now and skip the rest of this phase.** Called from here it runs quick mode (inline, no subagents) unless the user asked for thorough validation — then deep multi-agent mode. It writes `RESEARCH.md` and hands back a verdict block: carry that into PLAN.md's Research Findings, and use its verdict in Phase 6.
+**If the `idea-research` skill is installed, invoke it now and skip the rest of this phase.** It runs deep mode by default — five parallel research subagents — which is what you want for a plan worth executing; it falls back to its quick inline mode only if the user explicitly asked for a fast pass. It writes `RESEARCH.md` and hands back a verdict block: carry that into PLAN.md's Research Findings, and use its verdict in Phase 6.
 
 **Fallback (idea-research not installed): read `references/research-guide.md`** — the full search playbook. Summary of what it covers:
 
