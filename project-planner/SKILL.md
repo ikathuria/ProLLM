@@ -5,7 +5,8 @@ description: >
   Trigger this skill whenever the user describes a new app, tool, service, SaaS idea, side project,
   or anything they want to build — even if they haven't asked for a plan explicitly. Also trigger
   when the user says things like "I have an idea", "I want to build X", "help me plan this",
-  "is this feasible", "what stack should I use", or "can this make money". The output is a
+  or "what stack should I use". (For research-only asks like "is this feasible" or "can this
+  make money" without a full plan, the idea-research skill handles it.) The output is a
   structured PLAN.md plus a living PROJECT.md context tracker, ready to commit to a GitHub repo
   and used by Claude Code to execute autonomously. Always use this skill for project ideation —
   do not attempt ad-hoc planning without it.
@@ -33,9 +34,11 @@ Do NOT proceed to Phase 2 until you have enough to answer these. It's OK to infe
 
 ---
 
-## Phase 2: Research (use web search)
+## Phase 2: Research
 
-**Read `references/research-guide.md` now** — it has the full search playbook. Summary of what it covers:
+**If the `idea-research` skill is installed, invoke it now and skip the rest of this phase.** Called from here it runs quick mode (inline, no subagents) unless the user asked for thorough validation — then deep multi-agent mode. It writes `RESEARCH.md` and hands back a verdict block: carry that into PLAN.md's Research Findings, and use its verdict in Phase 6.
+
+**Fallback (idea-research not installed): read `references/research-guide.md`** — the full search playbook. Summary of what it covers:
 
 - **2a. Market** — competitor discovery queries, a per-competitor analysis table (pricing, limitations, user complaints mined from Reddit/HN/G2), demand-signal ranking, and a positioning verdict.
 - **2b. Feasibility** — identify the single hardest technical problem (the "spike"), audit every external API for free-tier limits, classify the build easy/medium/hard. Hard projects get a Milestone 0 spike before any scaffolding.
