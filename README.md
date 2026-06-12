@@ -29,6 +29,16 @@ Copy-Item -Recurse project-planner "$env:USERPROFILE\.claude\skills\"
 
 Then just describe what you want to Claude — e.g. *"I have an idea for an app that..."* — and the skill triggers automatically. You can also invoke it explicitly with `/project-planner`.
 
+### Optional: better Reddit research
+
+Claude Code cannot fetch reddit.com directly, so `idea-research`'s community agent falls back to search snippets. For full Reddit thread + comment access, connect the free [reddit-mcp-buddy](https://github.com/karanb192/reddit-mcp-buddy) MCP server (no API keys needed):
+
+```sh
+claude mcp add --transport stdio reddit-mcp-buddy -s user -- npx -y reddit-mcp-buddy
+```
+
+The skill detects it automatically and uses it when present.
+
 ## License
 
 [MIT](LICENSE)

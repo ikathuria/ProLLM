@@ -55,6 +55,7 @@ Launch rules:
 - **All five in a single message** so they run in parallel (general-purpose agents; they need WebSearch/WebFetch).
 - Each prompt must be fully self-contained — subagents do not see this conversation.
 - Do not edit the schema or honesty rules when composing prompts; they're what makes reports mergeable and trustworthy.
+- Subagents inherit MCP tools. If a Reddit MCP server is connected (e.g. reddit-mcp-buddy — look for tools like `search_reddit` / `get_post_details`), the community agent will use it per its brief; mention in its prompt that the tools are available. Without it, the brief's search-snippet fallback applies automatically.
 
 ### Model and effort per agent
 
