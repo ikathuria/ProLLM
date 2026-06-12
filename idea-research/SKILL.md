@@ -14,7 +14,7 @@ description: >
 
 # Idea Research Skill
 
-Researches whether an idea is worth building. Output: a `RESEARCH.md` report (template in `references/research-template.md`) plus a short verdict in chat.
+Researches whether an idea is worth building. Output: a `RESEARCH.md` report (template in `${CLAUDE_SKILL_DIR}/references/research-template.md`) plus a short verdict in chat.
 
 ## Mode selection — decide this first
 
@@ -41,15 +41,15 @@ Everything downstream inherits this framing, so get it right before launching an
 
 ## Phase 2A: DEEP mode — fan out research agents
 
-Read `references/report-schema.md`. Then build five prompts by filling the placeholders in each brief and appending the report schema to each:
+Read `${CLAUDE_SKILL_DIR}/references/report-schema.md`. Then build five prompts by filling the placeholders in each brief and appending the report schema to each:
 
 | Agent | Brief | Covers |
 |---|---|---|
-| Competitor | `references/competitor-brief.md` | Players, pricing, complaints, category pricing models |
-| Community | `references/community-brief.md` | Reddit + HN + forums: verbatim pain, DIY workarounds, willingness to pay |
-| Video demand | `references/video-brief.md` | YouTube metadata as demand signal |
-| News & trends | `references/trends-brief.md` | Funding/shutdowns/regulation, Google Trends (with proxies), momentum |
-| Feasibility | `references/feasibility-brief.md` | The spike, cost audit, prior-art failures |
+| Competitor | `${CLAUDE_SKILL_DIR}/references/competitor-brief.md` | Players, pricing, complaints, category pricing models |
+| Community | `${CLAUDE_SKILL_DIR}/references/community-brief.md` | Reddit + HN + forums: verbatim pain, DIY workarounds, willingness to pay |
+| Video demand | `${CLAUDE_SKILL_DIR}/references/video-brief.md` | YouTube metadata as demand signal |
+| News & trends | `${CLAUDE_SKILL_DIR}/references/trends-brief.md` | Funding/shutdowns/regulation, Google Trends (with proxies), momentum |
+| Feasibility | `${CLAUDE_SKILL_DIR}/references/feasibility-brief.md` | The spike, cost audit, prior-art failures |
 
 Launch rules:
 - **All five in a single message** so they run in parallel (general-purpose agents; they need WebSearch/WebFetch).
@@ -69,7 +69,9 @@ Pass a `model` on each Agent launch and append a budget line to each prompt. Def
 | Feasibility | sonnet | "Budget: ~20–25 searches/fetches. Fetch real pricing pages; secondhand pricing is stale." |
 
 - Every budget line ends with: "Stop early when marginal results start repeating what you already have."
-- Rationale: video work is mechanical metadata collection (haiku is enough); the others need judgment about evidence quality (sonnet). There is no native "effort" knob on subagents — the budget line IS the effort control.
+- Rationale: video work is mechanical metadata collection (haiku is enough); the others need judgment about evidence quality (sonnet).
+- Valid `model` values (per current Claude Code docs): an alias (`sonnet`, `opus`, `haiku`, `fable`), a full model ID, or `inherit`; omitted defaults to inherit. The per-invocation parameter overrides any agent-definition frontmatter but is itself overridden by `CLAUDE_CODE_SUBAGENT_MODEL` if the user set it.
+- There is no per-invocation **effort** parameter — for these ad-hoc launches, the budget line IS the effort control. (Effort can only be fixed declaratively, via an `effort` field in a custom agent definition under `.claude/agents/`; this skill deliberately uses ad-hoc general-purpose agents to stay zero-setup.)
 - **Escalation:** if the user signals high stakes ("considering quitting my job", "about to raise money"), omit `model` so agents inherit the main session's model, and raise budgets ~50%.
 - If a named model is unavailable in the environment, omit `model` and let agents inherit.
 
@@ -104,6 +106,6 @@ Merge the reports (or your inline findings). Synthesis is where the value is —
 
 ## Phase 4: Output
 
-1. **Write `RESEARCH.md`** using `references/research-template.md` — in the project repo root if one exists, else the current directory. Keep the verbatim quotes; they are the evidence. Fill the *Could not access* section honestly.
+1. **Write `RESEARCH.md`** using `${CLAUDE_SKILL_DIR}/references/research-template.md` — in the project repo root if one exists, else the current directory. Keep the verbatim quotes; they are the evidence. Fill the *Could not access* section honestly.
 2. **Give the verdict in chat** — short: the Verdict table's "Build it?" line, the two-sentence bottom line, and the single strongest piece of evidence for it. Point to RESEARCH.md for everything else. Do not duplicate the whole report into chat.
 3. If invoked by another skill (project-planner), also hand back the verdict block so it can flow into PLAN.md's Research Findings.

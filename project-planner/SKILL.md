@@ -16,9 +16,9 @@ description: >
 
 Turns a raw idea into a complete, actionable plan. Outputs a `PLAN.md` (build plan) and a `PROJECT.md` (living context tracker) committed to the project's GitHub repo, structured for autonomous Claude Code execution.
 
-**How to use the reference files:** each phase below has core rules inline and, where noted, a detailed guide in `references/`. Read the referenced file when you reach that phase — don't load them all up front.
+**How to use the reference files:** each phase below has core rules inline and, where noted, a detailed guide in `${CLAUDE_SKILL_DIR}/references/`. Read the referenced file when you reach that phase — don't load them all up front.
 
-**Composing with other skills:** if a skill is installed that matches a technology or task in the plan (e.g. a `supabase` skill when Supabase is the chosen database), invoke it for that part instead of working from general knowledge. If no matching skill exists, the guidance in `references/` is self-sufficient.
+**Composing with other skills:** if a skill is installed that matches a technology or task in the plan (e.g. a `supabase` skill when Supabase is the chosen database), invoke it for that part instead of working from general knowledge. If no matching skill exists, the guidance in `${CLAUDE_SKILL_DIR}/references/` is self-sufficient.
 
 ## Phase 1: Idea Intake
 
@@ -38,7 +38,7 @@ Do NOT proceed to Phase 2 until you have enough to answer these. It's OK to infe
 
 **If the `idea-research` skill is installed, invoke it now and skip the rest of this phase.** It runs deep mode by default — five parallel research subagents — which is what you want for a plan worth executing; it falls back to its quick inline mode only if the user explicitly asked for a fast pass. It writes `RESEARCH.md` and hands back a verdict block: carry that into PLAN.md's Research Findings, and use its verdict in Phase 6.
 
-**Fallback (idea-research not installed): read `references/research-guide.md`** — the full search playbook. Summary of what it covers:
+**Fallback (idea-research not installed): read `${CLAUDE_SKILL_DIR}/references/research-guide.md`** — the full search playbook. Summary of what it covers:
 
 - **2a. Market** — competitor discovery queries, a per-competitor analysis table (pricing, limitations, user complaints mined from Reddit/HN/G2), demand-signal ranking, and a positioning verdict.
 - **2b. Feasibility** — identify the single hardest technical problem (the "spike"), audit every external API for free-tier limits, classify the build easy/medium/hard. Hard projects get a Milestone 0 spike before any scaffolding.
@@ -53,7 +53,7 @@ Non-negotiables, even if the guide isn't loaded:
 
 ## Phase 3: Tech Stack Selection
 
-**Read `references/stack-guide.md` now** — it has the full decision trees: frontend, backend, database, ORM, auth, hosting, file storage, email, background jobs, testing, CI/CD, analytics, error monitoring, payments, and AI/LLM.
+**Read `${CLAUDE_SKILL_DIR}/references/stack-guide.md` now** — it has the full decision trees: frontend, backend, database, ORM, auth, hosting, file storage, email, background jobs, testing, CI/CD, analytics, error monitoring, payments, and AI/LLM.
 
 Non-negotiables:
 - **Choose the most free, self-hostable, open-source stack possible.** Paid services only with explicit user acceptance.
@@ -97,7 +97,7 @@ Rules:
 
 ## Phase 4: Build Plan
 
-**Read `references/milestones-guide.md` now** — it has task-sizing rules, "Done when" patterns per task type, per-task testing requirements, the standard milestone skeleton, and worked example breakdowns for common app types (CRUD SaaS, static site, AI app, CLI tool).
+**Read `${CLAUDE_SKILL_DIR}/references/milestones-guide.md` now** — it has task-sizing rules, "Done when" patterns per task type, per-task testing requirements, the standard milestone skeleton, and worked example breakdowns for common app types (CRUD SaaS, static site, AI app, CLI tool).
 
 Non-negotiables:
 - Every task is **self-contained** (one Claude Code session, no questions), **testable** (checkable "Done when", not a judgment call), and **sequenced** (depends only on tasks before it).
@@ -111,10 +111,10 @@ Non-negotiables:
 Generate **two** files.
 
 ### 5a. `PLAN.md`
-The build plan — use the template in `references/plan-template.md`. It includes Viability Summary, Research Findings, Risks, Tech Stack (with pinned versions), Project Structure, Environment Variables, Milestones, and the Claude Code commands.
+The build plan — use the template in `${CLAUDE_SKILL_DIR}/references/plan-template.md`. It includes Viability Summary, Research Findings, Risks, Tech Stack (with pinned versions), Project Structure, Environment Variables, Milestones, and the Claude Code commands.
 
 ### 5b. `PROJECT.md` — the living project tracker
-A single source-of-truth context map so **any LLM or human can understand the whole project cold**, without reading every file. Use the template in `references/project-template.md`. Milestone 1 creates the first version; every later session keeps it current. It must contain:
+A single source-of-truth context map so **any LLM or human can understand the whole project cold**, without reading every file. Use the template in `${CLAUDE_SKILL_DIR}/references/project-template.md`. Milestone 1 creates the first version; every later session keeps it current. It must contain:
 
 - **What it is** — one paragraph: what the app does and who it's for.
 - **Stack** — chosen technologies *with pinned current versions*.
