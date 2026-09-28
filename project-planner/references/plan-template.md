@@ -8,28 +8,29 @@
 
 | | |
 |---|---|
-| **Market** | [crowded/niche/gap] — [1 sentence] |
-| **Feasibility** | [easy/medium/hard] — [key challenge] |
-| **Free to build** | [yes/mostly/no] — [any costs] |
+| **Build it?** | [yes / yes-with-changes / weekend-prototype-first / no] |
+| **Market** | [crowded-no-angle / crowded-with-gap / niche / open] — [1 sentence] |
+| **Demand** | [strong / moderate / weak / absent] — [strongest single piece of evidence] |
+| **Direction** | [tailwind / neutral / headwind / hype-peak-passed] |
+| **Feasibility** | [easy / medium / hard] — [the spike] |
+| **Free to build** | [yes / mostly / no] — [unavoidable costs] |
 | **Monetization** | [path or "portfolio project"] |
+
+**In two sentences:** [the honest bottom line]
 
 ---
 
 ## Research Findings
 
-### Competitors
-| Name | Pricing | Strength | Limitations | User complaints |
-|---|---|---|---|---|
-| | | | | |
+> Full evidence (competitor table, verbatim user quotes, demand signals, cost audit, sources): see [`RESEARCH.md`](RESEARCH.md). Only the plan-shaping conclusions are repeated here.
 
-**Positioning:** [crowded-no-angle / crowded-with-gap / niche / open] — [the gap or wedge, if any]
-
-### Feasibility
-- **Hardest part:** [the spike] — **approach:** [chosen library/API/technique]
+- **Positioning / wedge:** [the gap this plan builds toward, or why there's no angle]
+- **The spike:** [hardest technical problem] — **approach:** [chosen library/API/technique]
 - **Cost flags:** [anything with no free path, or "none — fully free to build"]
+- **Monetization:** [chosen path and why, or "portfolio project — not applicable"]
+- **Open questions a prototype should answer:** [from RESEARCH.md's Conflicts & unknowns]
 
-### Monetization
-[Chosen path and why it's the simplest fit, or "portfolio project — not applicable"]
+*(If RESEARCH.md doesn't exist — research ran inline via the fallback guide — put the competitor table here instead: Name | Pricing | Strength | Limitations | User complaints.)*
 
 ---
 
@@ -54,6 +55,8 @@
 | Auth | | | |
 | Hosting | | | |
 | Payments | | | (if applicable) |
+
+**Deliberately skipped:** [layers not used and why, e.g. "no auth — single-user tool"]
 
 ---
 
@@ -100,15 +103,26 @@ VARIABLE_NAME=        # what it is
 
 ## Milestones
 
+### Milestone 0: Spike *(only if Feasibility = hard)*
+**Goal:** The hardest technical piece is proven in isolation, before any scaffolding.
+
+Tasks:
+- [ ] [Minimal prototype of the spike] — Done when: [measurable result, e.g. works on N real examples at ≤ $X per call]
+
+---
+
 ### Milestone 1: Scaffold
-**Goal:** Repo runs locally, folder structure in place, all dependencies installed, context tracker created.
+**Goal:** Repo runs locally, folder structure in place, CI green, context tracker created.
 
 Tasks:
 - [ ] Initialize `apps/web` with [framework] at its current stable version (verify via official docs) — Done when: `npm --prefix apps/web run dev` starts without errors
 - [ ] Set up folder structure per Project Structure section — Done when: `apps/`, `docs/`, root delegating `package.json` exist
+- [ ] Add lint, typecheck, and test tooling with one passing placeholder test — Done when: `npm run lint`, `npm run typecheck`, `npm test` all pass
+- [ ] Add GitHub Actions CI workflow (install, lint, typecheck, test on push/PR) — Done when: the workflow passes on the first push
 - [ ] Create `PROJECT.md` from the tracker outline — Done when: it describes purpose, stack+versions, structure, conventions, status
 - [ ] Add root `CLAUDE.md` pointing to `PROJECT.md` — Done when: committed
 - [ ] Configure environment variables — Done when: `.env.example` committed
+- [ ] Gate: lint, typecheck, and full test suite pass — Done when: all green locally
 
 ---
 
@@ -117,31 +131,35 @@ Tasks:
 
 Tasks:
 - [ ] [Task] — Done when: [condition]
-- [ ] [Task] — Done when: [condition]
+- [ ] E2E test of the core happy path — Done when: it passes locally and in CI
+- [ ] Gate: lint, typecheck, and full test suite pass — Done when: all green locally
 
 ---
 
-### Milestone 3: UI/UX
+### Milestone 3: Data Layer
+**Goal:** All data persists correctly, schema is stable. *(Merge into Core Feature for small apps; swap order with Milestone 2 if the core can't run on mock data.)*
+
+Tasks:
+- [ ] [Task] — Done when: [condition]
+- [ ] Gate: lint, typecheck, and full test suite pass — Done when: all green locally
+
+---
+
+### Milestone 4: UI/UX
 **Goal:** A real user could navigate and use the app without confusion.
 
 Tasks:
 - [ ] [Task] — Done when: [condition]
+- [ ] Gate: lint, typecheck, and full test suite pass — Done when: all green locally
 
 ---
 
-### Milestone 4: Auth *(if applicable)*
+### Milestone 5: Auth *(if applicable)*
 **Goal:** Users can sign up, log in, and access protected routes.
 
 Tasks:
 - [ ] [Task] — Done when: [condition]
-
----
-
-### Milestone 5: Data Layer
-**Goal:** All data persists correctly, schema is stable.
-
-Tasks:
-- [ ] [Task] — Done when: [condition]
+- [ ] Gate: lint, typecheck, and full test suite pass — Done when: all green locally
 
 ---
 
@@ -150,6 +168,7 @@ Tasks:
 
 Tasks:
 - [ ] [Task] — Done when: [condition]
+- [ ] Gate: lint, typecheck, and full test suite pass — Done when: all green locally
 
 ---
 
@@ -158,6 +177,7 @@ Tasks:
 
 Tasks:
 - [ ] [Task] — Done when: [condition]
+- [ ] Gate: lint, typecheck, and full test suite pass — Done when: all green locally
 
 ---
 
@@ -166,6 +186,7 @@ Tasks:
 
 Tasks:
 - [ ] [Task] — Done when: [condition]
+- [ ] Gate: lint, typecheck, and full test suite pass — Done when: all green locally
 
 ---
 

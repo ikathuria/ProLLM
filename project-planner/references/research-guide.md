@@ -1,97 +1,40 @@
-# Research Guide (Phase 2)
+# Research Guide (Phase 2 fallback)
 
-Deep methodology for market, feasibility, and monetization research. Run searches in parallel where possible. Always append the **current year** to trend/market searches (check today's date — never hardcode a past year).
-
----
-
-## 2a. Market Research
-
-### Competitor discovery — run all of these query shapes
-- `[idea] existing tools OR apps OR competitors [year]`
-- `best [product category] [year]` — listicles surface the established players fast
-- `[competitor name] alternatives` — once you find one player, this finds the rest
-- `site:reddit.com [problem] tool recommendation` — what real users actually use
-- `[product category] open source` — free alternatives are competitors too
-- Check Product Hunt for recent launches in the space (`site:producthunt.com [category]`)
-
-### Competitor analysis framework
-Build a table with one row per competitor (aim for 3–5):
-
-| Field | What to capture |
-|---|---|
-| Name + URL | |
-| Pricing | Free tier? Entry price? Per-seat or flat? |
-| Core strength | The one thing it does best |
-| Limitations | Missing features, platform gaps |
-| User complaints | Mine Reddit, HN comments, G2/Capterra reviews, App Store reviews — complaints are the gap map |
-| Last activity | Dead/stale products signal either a dead market or an open gap — figure out which |
-
-### Demand signals (cheap validation, in rough order of strength)
-1. **People already pay** for an inferior/adjacent solution → strongest signal
-2. **Recurring complaints** about existing tools in forums ("I wish X did Y")
-3. **Search volume** — `[problem] how to` results and forum thread counts
-4. **DIY workarounds** — people stitching together spreadsheets/scripts for this means real pain
-5. **No results at all** — usually means no demand, not an untapped goldmine. Treat as a red flag unless the idea is genuinely novel tech.
-
-### Positioning verdict
-End market research with one of:
-- **Crowded, no angle** — recommend not building (or building only as a learning project)
-- **Crowded, clear gap** — name the gap and the wedge feature
-- **Niche, viable** — small but real audience; fine for portfolio/side income
-- **Open** — rare; double-check it isn't open because demand is absent
-
-### Kill criteria — recommend NOT building (or descoping to a weekend prototype) when
-- The gap requires resources the user doesn't have (sales team, licensing, regulated data)
-- A free, good-enough incumbent exists and the user's only differentiator is "mine will be nicer"
-- The core value depends on network effects with zero distribution plan
-- Demand evidence is purely hypothetical after honest searching
-Say this plainly in the Viability Summary. A respectful "don't build this, here's why" is a valid and valuable output of this skill.
+Condensed playbook for when the `idea-research` skill isn't installed. (If it is, use it instead — it runs this research far more thoroughly, with parallel agents and a full `RESEARCH.md`.) Run searches in parallel where possible, append the **current year** to trend/market searches, and date what you cite.
 
 ---
+
+## 2a. Market
+
+**Competitor discovery** — run these query shapes:
+- `best [category] [year]` · `[category] existing tools OR apps [year]` · `[first competitor] alternatives`
+- `[category] open source` · `site:producthunt.com [category]`
+- `site:reddit.com [problem] tool recommendation` (reddit.com itself can't be fetched — quote search snippets) · HN via `https://hn.algolia.com/api/v1/search?query=[terms]&tags=comment`
+
+**Per competitor (3–5):** name + URL · pricing (fetch the real pricing page) · core strength · limitations · verbatim user complaints · last activity.
+
+**Demand signals, strongest first:** people already pay for an inferior solution → recurring complaints ("I wish X did Y") → DIY workarounds (spreadsheets, scripts) → search/tutorial volume. No results at all usually means no demand, not a goldmine.
+
+**Positioning verdict:** crowded-no-angle / crowded-with-gap (name the wedge) / niche-viable / open (check it isn't open because demand is absent).
 
 ## 2b. Feasibility
 
-### Identify the hardest part first
-Name the single hardest technical problem (the "spike"). Search:
-- `[core challenge] open source solution OR library [year]`
-- `[core challenge] free API`
-- `how does [competitor] implement [feature]` — engineering blogs often spill the approach
-
-### API & service cost audit
-For every external API/service the idea needs:
-- Free tier limits (requests/day, rows, seats) — and what happens at the limit (hard stop vs. surprise bill)
-- Is a credit card required up front?
-- Self-hostable alternative? (e.g. Ollama vs. paid LLM APIs, Plausible self-hosted vs. cloud)
-- **Flag any component with no free path** — this goes in the Viability Summary verbatim
-
-### Effort classification
-- **Easy** — CRUD + UI over known patterns; no spike
-- **Medium** — one spike with a known library/API solution
-- **Hard** — spike has no off-the-shelf solution, or requires ML training, realtime sync at scale, OS-level integration, or App Store review cycles
-If **Hard**: recommend a milestone-0 prototype that proves only the spike, before any scaffold work.
-
----
+- **The spike:** name the single hardest technical problem; search `[challenge] open source library [year]`, `[challenge] free API`, `how does [competitor] implement [feature]`.
+- **Cost audit:** for every external service — free-tier limit, hard stop vs. surprise bill at the limit, card required up front, self-hostable alternative. **Flag anything with no free path.**
+- **Classify:** easy (CRUD, no spike) / medium (spike with a known solution) / hard (no off-the-shelf solution, ML training, realtime at scale, OS-level, App Store review) → hard means Milestone 0: Spike.
+- **Prior-art failures:** `[idea] postmortem OR "why we shut down"`.
 
 ## 2c. Monetization (skip if portfolio project)
 
-### Realistic paths, simplest-first
-1. **One-time purchase / lifetime deal** — simplest; no subscription infra; good for tools
-2. **Freemium with usage gate** — free tier capped on the dimension that costs you money (API calls, storage, seats)
-3. **Subscription** — only when value recurs monthly; needs Stripe + billing portal
-4. **Donations/sponsorship** (GitHub Sponsors, Ko-fi) — for open-source; expect low conversion
-5. **Ads** — only viable at high traffic; almost never right for a new side project
+Simplest-first: one-time purchase → freemium with a usage gate → subscription (only if value recurs monthly) → donations → ads (almost never). Anchor against 2–3 comparables' pricing; if each user costs API money, the free tier must cap below the paid price. Monetization can be a late milestone.
 
-### Sanity checks
-- Search `[similar product] pricing` for 2–3 comparables; anchor within their range
-- Compute rough unit economics: if each user costs API money, the free tier must cap below the paid price
-- **Recommend the path with the least infrastructure** that matches the value model; monetization can be Milestone N, not Milestone 1
+## Kill criteria — recommend NOT building (or a weekend prototype only) when
 
----
+- The gap needs resources the user doesn't have (sales team, licensing, regulated data)
+- A free, good-enough incumbent exists and the only differentiator is "mine will be nicer"
+- Core value depends on network effects with zero distribution plan
+- Demand evidence is purely hypothetical after honest searching
 
-## Output of Phase 2
-Carry forward into PLAN.md (Research Findings section):
-- Competitor table
-- Positioning verdict + the gap (if any)
-- Hardest technical part + chosen approach
-- Cost flags (anything not free)
-- Recommended monetization path (or "portfolio project")
+## Output
+
+Fill PLAN.md's Viability Summary table and Research Findings — including the competitor table, since there's no RESEARCH.md to link to. Say "searched X, found nothing" vs. "couldn't access X" honestly. Then apply the Phase 2 gate in SKILL.md.

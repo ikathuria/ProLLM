@@ -8,8 +8,10 @@ description: >
   or "what stack should I use". (For research-only asks like "is this feasible" or "can this
   make money" without a full plan, the idea-research skill handles it.) The output is a
   structured PLAN.md plus a living PROJECT.md context tracker, ready to commit to a GitHub repo
-  and used by Claude Code to execute autonomously. Always use this skill for project ideation —
-  do not attempt ad-hoc planning without it.
+  and used by Claude Code to execute autonomously. Always use this skill for new-project
+  ideation — do not attempt ad-hoc planning without it. Do NOT trigger for features, fixes, or
+  refactors inside an existing codebase ("build a login page", "add dark mode") — only for
+  starting a new project or product.
 ---
 
 # Project Planner Skill
@@ -36,18 +38,24 @@ Do NOT proceed to Phase 2 until you have enough to answer these. It's OK to infe
 
 ## Phase 2: Research
 
-**If the `idea-research` skill is installed, invoke it now and skip the rest of this phase.** It runs deep mode by default — five parallel research subagents — which is what you want for a plan worth executing; it falls back to its quick inline mode only if the user explicitly asked for a fast pass. It writes `RESEARCH.md` and hands back a verdict block: carry that into PLAN.md's Research Findings, and use its verdict in Phase 6.
+**If `RESEARCH.md` already exists** for this idea (repo root or current directory), read it instead of re-researching — unless it's stale (older than ~3 months) or the idea has materially changed; then ask whether to refresh it.
 
-**Fallback (idea-research not installed): read `${CLAUDE_SKILL_DIR}/references/research-guide.md`** — the full search playbook. Summary of what it covers:
+**If the `idea-research` skill is installed, invoke it now and skip the rest of this phase.** It runs deep mode by default — five parallel research subagents — falling back to quick mode only if the user explicitly asked for a fast pass. Pass it the answers from Phase 1 so it doesn't re-ask. It writes `RESEARCH.md` and hands back its verdict block without announcing it in chat — you own the single user-facing summary (Phase 6).
 
-- **2a. Market** — competitor discovery queries, a per-competitor analysis table (pricing, limitations, user complaints mined from Reddit/HN/G2), demand-signal ranking, and a positioning verdict.
-- **2b. Feasibility** — identify the single hardest technical problem (the "spike"), audit every external API for free-tier limits, classify the build easy/medium/hard. Hard projects get a Milestone 0 spike before any scaffolding.
-- **2c. Monetization** (if applicable) — realistic paths simplest-first, comparable pricing, unit-economics sanity check.
+**Fallback (idea-research not installed): read `${CLAUDE_SKILL_DIR}/references/research-guide.md`** — a condensed playbook covering market (competitors, demand, positioning), feasibility (the spike, cost audit, easy/medium/hard), monetization, and kill criteria.
 
-Non-negotiables, even if the guide isn't loaded:
+Non-negotiables either way:
 - Append the **current year** to trend searches (check today's date; never hardcode a past year).
-- Apply the guide's **kill criteria** honestly — "don't build this, here's why" is a valid outcome of this skill.
-- Carry the findings into PLAN.md's Research Findings section verbatim, not paraphrased into vagueness.
+- Apply the **kill criteria** honestly — "don't build this, here's why" is a valid outcome of this skill.
+
+### Gate: stop before planning a "no"
+
+If the verdict is **no** or **weekend-prototype-first**, do NOT continue to Phase 3. Show the user the verdict (Phase 6 format, stack/milestone lines omitted) and ask how to proceed:
+- **Stop here** — the research is the deliverable.
+- **Prototype plan** — a stripped-down plan: Milestone 0 (the spike / the riskiest assumption) plus the smallest scaffold to test it; skip Auth, Monetization, and Polish.
+- **Full plan anyway** — proceed, recording the verdict and the user's decision in PLAN.md's Risks and Notes & Decisions.
+
+For **yes** / **yes-with-changes**, continue; for yes-with-changes, bake the changes into the plan's scope.
 
 ---
 
@@ -66,29 +74,12 @@ Non-negotiables:
 
 ## Phase 3.5: Project Structure
 
-Bake a consistent structure into every plan so any LLM (or human) can navigate the repo cold. Default layout for an app project:
-
-```
-repo-root/
-├─ apps/
-│  └─ web/                 # primary app (Next.js etc.) — its own package.json
-│     └─ src/
-│        ├─ app/           # routes / entry points
-│        ├─ features/      # feature-sliced modules, each colocating
-│        │                 #   types.ts, validation.ts, *.test.ts
-│        └─ lib/           # cross-cutting infra (db client, analytics, …)
-├─ packages/               # shared code — ONLY create once a 2nd consumer exists
-├─ docs/                   # numbered kebab-case: 01-product-requirements.md, …
-├─ PROJECT.md              # living project tracker / context map (see Phase 5)
-├─ PLAN.md                 # this plan
-├─ package.json            # root: delegating scripts, NOT full workspaces yet
-├─ .env.example
-└─ README.md
-```
+Bake a consistent structure into every plan so any LLM (or human) can navigate the repo cold. The default layout (`apps/web/src/{app,features,lib}`, `packages/`, `docs/`, root `PROJECT.md` + `PLAN.md`) is the Project Structure section of `${CLAUDE_SKILL_DIR}/references/plan-template.md` — adapt that tree to the chosen stack.
 
 Rules:
 - **Use `apps/<name>` even for a single app.** It costs nothing now and leaves a clean home for a second surface (mobile, admin, marketing site) later.
 - **Root `package.json` delegates, it does not hoist.** Scripts call the primary app via `npm --prefix apps/web run <script>` (`dev`, `build`, `lint`, `test`). Do **not** adopt npm/pnpm workspaces until a real second package exists — workspaces hoist `node_modules` and migrate the lockfile, which is churn with no payoff for one app.
+- **`packages/` only once a second consumer exists.**
 - **`docs/` filenames are zero-padded kebab-case, no spaces or special chars** (`01-...`, `02-...`). Spaces and `&`/`()` fight the CLI and tooling.
 - **No throwaway scaffolding committed** (no `test.txt`, no stray placeholders).
 - **Scale down for tiny projects:** a purely static single-page site can flatten (skip `apps/`), but keep `docs/` + `PROJECT.md`.
@@ -111,7 +102,7 @@ Non-negotiables:
 Generate **two** files.
 
 ### 5a. `PLAN.md`
-The build plan — use the template in `${CLAUDE_SKILL_DIR}/references/plan-template.md`. It includes Viability Summary, Research Findings, Risks, Tech Stack (with pinned versions), Project Structure, Environment Variables, Milestones, and the Claude Code commands.
+The build plan — use the template in `${CLAUDE_SKILL_DIR}/references/plan-template.md`. It includes Viability Summary (the full verdict table), Research Findings (plan-shaping conclusions only — link to `RESEARCH.md` for the evidence rather than copying it), Risks, Tech Stack (with pinned versions), Project Structure, Environment Variables, Milestones, and the Claude Code commands.
 
 ### 5b. `PROJECT.md` — the living project tracker
 A single source-of-truth context map so **any LLM or human can understand the whole project cold**, without reading every file. Use the template in `${CLAUDE_SKILL_DIR}/references/project-template.md`. Milestone 1 creates the first version; every later session keeps it current. It must contain:
@@ -144,19 +135,21 @@ Both files must state this standing rule, and you should follow it during planni
 
 ---
 
-## Phase 6: Viability Summary
+## Phase 6: Final Summary
 
-At the end, give the user a plain-English summary:
+This is the **only** verdict the user sees in chat for the whole run (idea-research, when invoked from here, doesn't post its own). Keep it short and point to the files for detail:
 
 ```
 **Idea:** [name]
-**Market:** [crowded/niche/gap found] — [1 sentence on competition]
-**Feasibility:** [easy/medium/hard] — [what the hardest part is]
+**Build it?** [yes / yes-with-changes / weekend-prototype-first / no] — [1–2 sentences why]
+**Market:** [positioning] — [1 sentence on competition]
+**Demand:** [strength] — [single strongest piece of evidence]
+**Feasibility:** [easy/medium/hard] — [the spike]
 **Free to build:** [yes/mostly/no] — [any unavoidable costs]
 **Monetization:** [path if applicable, or "portfolio project"]
 **Recommended stack:** [list]
-**Estimated milestones:** [N]
-**Verdict:** [1–2 sentences on whether to build it and why]
+**Milestones:** [N] — first up: [Milestone 0 or 1 name]
+Full evidence in RESEARCH.md; build plan in PLAN.md.
 ```
 
-Be honest in the verdict. If the kill criteria from Phase 2 fired, the verdict is "don't build this (or build it only to learn), because [reason]" — that is a successful run of this skill, not a failure.
+Be honest. If the kill criteria fired, say "don't build this (or build it only to learn), because [reason]" — that is a successful run of this skill, not a failure.

@@ -27,6 +27,13 @@ Deep mode is a multi-minute, search-heavy run — that's the contract. Don't sil
 
 ## Phase 1: Frame the research
 
+**Check for prior research first.** If a `RESEARCH.md` for this idea already exists (repo root or current directory), read it before launching anything:
+- Recent (≲ 3 months, per its *Researched:* date) and the idea hasn't materially changed → reuse it; answer from it and skip to Phase 4 (step 2 or 3). Say you reused it.
+- Stale, or the idea has shifted → offer a **refresh**: re-run only the agents whose findings go stale or are affected (usually competitor + news & trends), keep the rest, and update the file in place with a new date.
+- Different idea → write the new report as `RESEARCH-<idea-slug>.md` rather than overwriting.
+
+If the calling skill (e.g. project-planner) already gathered idea/user/problem answers, use them — don't re-ask.
+
 Everything downstream inherits this framing, so get it right before launching anything. Distill from the conversation (ask only if genuinely missing):
 
 - **IDEA** — one sentence, concrete ("an app that X for Y"), not the user's whole pitch
@@ -94,9 +101,10 @@ Merge the reports (or your inline findings). Synthesis is where the value is —
 
 1. **Cross-reference.** Do community complaints match competitor weaknesses? (That's the wedge.) Does news momentum contradict dead forums? Do the same competitor names recur across agents? Conflicts go in the report's *Conflicts & unknowns* — a disagreement between sources is a finding, not noise.
 2. **Weigh evidence by strength rating**, and read everything net of the *Could not access* lists.
-3. **Positioning verdict:** crowded-no-angle / crowded-with-gap (name it) / niche-viable / open (and whether "open" = absent demand).
-4. **Monetization (skip if portfolio project).** From the competitor agent's pricing data: pick the simplest path that matches the value model — one-time → freemium-with-usage-gate → subscription → donations (ads almost never, for a new project). Anchor against 2–3 comparables; if usage costs money (e.g. LLM calls), the free tier must cap below the paid price. Monetization can be a late milestone — recommend the least infrastructure that works.
-5. **Kill criteria — recommend NOT building (or a weekend prototype only) when:**
+3. **Spot-check what the verdict rests on.** Identify the 2–3 claims the verdict actually depends on (e.g. "no competitor has a free tier", "API X costs $Y/call"). If any is rated *weak*, or two agents contradict each other on it, verify it yourself with a quick search/fetch before relying on it. Note corrections in *Conflicts & unknowns*.
+4. **Positioning verdict:** crowded-no-angle / crowded-with-gap (name it) / niche-viable / open (and whether "open" = absent demand).
+5. **Monetization (skip if portfolio project).** From the competitor agent's pricing data: pick the simplest path that matches the value model — one-time → freemium-with-usage-gate → subscription → donations (ads almost never, for a new project). Anchor against 2–3 comparables; if usage costs money (e.g. LLM calls), the free tier must cap below the paid price. Monetization can be a late milestone — recommend the least infrastructure that works.
+6. **Kill criteria — recommend NOT building (or a weekend prototype only) when:**
    - The gap requires resources the user doesn't have (sales team, licensing, regulated data)
    - A free, good-enough incumbent exists and the only differentiator is "mine will be nicer"
    - Core value depends on network effects with zero distribution plan
@@ -108,5 +116,5 @@ Merge the reports (or your inline findings). Synthesis is where the value is —
 ## Phase 4: Output
 
 1. **Write `RESEARCH.md`** using `${CLAUDE_SKILL_DIR}/references/research-template.md` — in the project repo root if one exists, else the current directory. Keep the verbatim quotes; they are the evidence. Fill the *Could not access* section honestly.
-2. **Give the verdict in chat** — short: the Verdict table's "Build it?" line, the two-sentence bottom line, and the single strongest piece of evidence for it. Point to RESEARCH.md for everything else. Do not duplicate the whole report into chat.
-3. If invoked by another skill (project-planner), also hand back the verdict block so it can flow into PLAN.md's Research Findings.
+2. **Standalone run → give the verdict in chat** — short: the Verdict table's "Build it?" line, the two-sentence bottom line, and the single strongest piece of evidence for it. Point to RESEARCH.md for everything else. Do not duplicate the whole report into chat.
+3. **Invoked by another skill (e.g. project-planner) → don't post a verdict in chat.** Hand back the filled Verdict table + two-sentence bottom line + the *Conflicts & unknowns* bullets, and let the calling skill present the single final summary. This avoids the user reading two overlapping verdicts.

@@ -9,6 +9,7 @@ You are a video-demand research agent. You have WebSearch and WebFetch. You CANN
 **The idea being researched:** {IDEA}
 **Problem it solves:** {PROBLEM}
 **Target user:** {TARGET_USER}
+**Product category:** {CATEGORY}
 **Seed search terms:** {SEED_TERMS}
 **Current year:** {YEAR}
 

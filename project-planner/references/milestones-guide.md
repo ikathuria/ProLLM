@@ -37,7 +37,7 @@ Bad: "Done when: auth works", "Done when: code is clean". If you can't phrase a 
 
 ## Standard milestone skeleton
 
-1. **Scaffold** — repo setup, dependencies, folder structure (per Phase 3.5), env vars, CI workflow, initial `PROJECT.md` + root `CLAUDE.md`
+1. **Scaffold** — repo setup, dependencies, folder structure (per plan-template's Project Structure), env vars, CI workflow, initial `PROJECT.md` + root `CLAUDE.md`
 2. **Core feature** — the single thing that makes the app worth existing, end-to-end, ugly is fine
 3. **Data layer** — schema, migrations, CRUD (merge into Core feature for small apps)
 4. **UI/UX** — real navigation, responsive if needed, empty/loading states
@@ -57,7 +57,7 @@ Adjust freely: order Core feature before Data layer only when the core can run o
 - M1 Scaffold (Astro, GitHub Pages workflow) → M2 Content structure + layouts → M3 Pages + styling → M4 Deploy (often just merging the workflow) → M5 Polish (SEO meta, lighthouse pass). No auth/data milestones — say so explicitly.
 
 ### AI chat/assistant app
-- M0 Spike (prompt + model choice proven against real examples, cost measured per interaction) → M1 Scaffold → M2 Core chat loop with streaming → M3 Data layer (conversation persistence) → M4 UI → M5 Auth + usage caps (caps before launch, not after) → M7 Deploy → M8 Polish
+- M0 Spike (prompt + model choice proven against real examples, cost measured per interaction) → M1 Scaffold → M2 Core chat loop with streaming → M3 Data layer (conversation persistence) → M4 UI → M5 Auth + usage caps (caps before launch, not after) → M6 Deploy → M7 Polish
 
 ### CLI/dev tool
 - M1 Scaffold (package bin entry, arg parsing) → M2 Core command end-to-end → M3 Secondary commands → M4 DX polish (help text, errors, colors) → M5 Publish (npm/PyPI + release workflow). No UI/auth/deploy milestones.
