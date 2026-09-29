@@ -11,7 +11,8 @@ description: >
   and used by Claude Code to execute autonomously. Always use this skill for new-project
   ideation — do not attempt ad-hoc planning without it. Do NOT trigger for features, fixes, or
   refactors inside an existing codebase ("build a login page", "add dark mode") — only for
-  starting a new project or product.
+  starting a new project or product. Do NOT trigger for hackathon entries (a competition
+  with judges and a deadline) — the hackathon-planner skill handles those.
 ---
 
 # Project Planner Skill
@@ -23,6 +24,8 @@ Turns a raw idea into a complete, actionable plan. Outputs a `PLAN.md` (build pl
 **Composing with other skills:** if a skill is installed that matches a technology or task in the plan (e.g. a `supabase` skill when Supabase is the chosen database), invoke it for that part instead of working from general knowledge. If no matching skill exists, the guidance in `${CLAUDE_SKILL_DIR}/references/` is self-sufficient.
 
 ## Phase 1: Idea Intake
+
+**Hackathon check first.** If the project is for a hackathon or similar judged competition, stop and use the `hackathon-planner` skill instead (it plans around the event's judging criteria and an agent-session timeline, and skips SaaS scaffolding like auth and monetization). If a `HACKATHON_PLAN.md` already exists and the user now wants to grow the project into a real product, read it and `RESEARCH.md` as inputs and continue below rather than re-asking what they already answered.
 
 Ask the user these questions (only the ones not already answered in the conversation):
 
