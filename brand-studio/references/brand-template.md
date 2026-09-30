@@ -79,4 +79,10 @@ Rules for buttons (variants, when to use), inputs, cards, nav, tables, empty/loa
 
 ## Accessibility
 AA contrast (4.5:1 body, 3:1 large/UI), visible focus ring spec, 44px targets, keyboard paths.
+Contrast matrix: <token pair → ratio, light and dark>.
+
+## SEO & metadata (web)
+- Title format: `<Page> · <Brand>` (30–60 chars) · Description voice: <rule>, 70–160 chars
+- OG/social image: <template/style, 1200×630, path> · Favicon set: <paths>
+- Headings: one H1 per page, no skipped levels; don't use styled divs as headings.
 ```

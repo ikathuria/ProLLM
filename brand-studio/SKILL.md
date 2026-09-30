@@ -6,7 +6,7 @@ description: >
   rendered previews, turns the chosen one into brand guidelines saved in the repo (BRAND.md +
   design tokens), confirms them with the user, then rebrands the UI and verifies it with
   screenshots. Use when the user asks for a better/new/redesigned UI, a rebrand, brand
-  guidelines, a design system for their app, "make it look better", "less generic", "not AI
+  guidelines, a design system for their app, an accessibility or SEO check of their UI, "make it look better", "less generic", "not AI
   slop", "polish the UI", or "it looks like every other AI app". Also handles quick reviews of
   an existing UI. Combines design direction, branding, and implementation in one flow.
   Use INSTEAD of ui-ux-pro-max, brand, ui-styling, or design-system for redesigning or
@@ -52,6 +52,8 @@ Read before designing. Skim broadly, then write a short **project read** in chat
   `DESIGN.md`, Figma links, or design tokens.
 - **Screens that matter:** list the key routes/screens (landing, dashboard, core flow) and
   screenshot the current state if it runs (dev server + built-in browser, or the `run` skill).
+- **Baseline audits:** if it runs, record accessibility and SEO baselines for those screens
+  using `${CLAUDE_SKILL_DIR}/references/audits.md`, so Phase 6 can show before/after.
 - **Constraints:** brand assets that must stay (logo, legal colors), accessibility needs,
   dark mode, mobile, i18n.
 
@@ -145,10 +147,16 @@ dark mode if supported), score against `${CLAUDE_SKILL_DIR}/references/critique-
 fix anything below 3, and re-screenshot. Also check that the result matches BRAND.md. Ask
 yourself explicitly: *"Is this boring?"* If yes, push the signature moves before polishing.
 
+Then run the **accessibility and SEO audits** in `${CLAUDE_SKILL_DIR}/references/audits.md`
+on every changed screen: an axe-core scan, the palette contrast matrix, manual keyboard and
+semantics checks, per-page SEO checks (title, description, H1/headings, OG image, favicons,
+alt text, canonical), and Lighthouse where possible. Fix every critical or serious issue and
+every regression from the Phase 1 baseline, then re-run. The work isn't done while audits fail.
+
 Report: the chosen direction, the files created (BRAND.md, tokens), the screens changed,
-before/after screenshots, the scores, and anything left to do.
+before/after screenshots, the rubric scores, the before/after audit table, and anything left to do.
 
 ## Review only
 
-Screenshot, run the rubric, and output a prioritized list of concrete changes (file + what to
+Screenshot, run the rubric and the audits in `references/audits.md`, and output a prioritized list of concrete changes (file + what to
 change), worst offenders first. If there's no brand yet, offer to run the full flow.
