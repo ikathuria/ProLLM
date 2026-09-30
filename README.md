@@ -30,7 +30,7 @@ Six skills, roughly in the order you'd use them on a project.
 ### How they compose
 
 - `project-planner` runs `idea-research` for its research phase. `hackathon-planner` reuses parts of `idea-research` and `project-planner`'s stack guide.
-- `hackathon-planner` hands the visual layer to `brand-studio`.
+- `project-planner` and `hackathon-planner` hand the visual layer to `brand-studio`: project-planner adds a gated brand task before feature screens and a final audit pass.
 - Any existing `RESEARCH.md`, `PLAN.md`, or `BRAND.md` is read and reused rather than regenerated.
 - Every skill also works standalone.
 

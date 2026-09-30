@@ -21,7 +21,7 @@ Turns a raw idea into a complete, actionable plan. Outputs a `PLAN.md` (build pl
 
 **How to use the reference files:** each phase below has core rules inline and, where noted, a detailed guide in `${CLAUDE_SKILL_DIR}/references/`. Read the referenced file when you reach that phase — don't load them all up front.
 
-**Composing with other skills:** if a skill is installed that matches a technology or task in the plan (e.g. a `supabase` skill when Supabase is the chosen database), invoke it for that part instead of working from general knowledge. If no matching skill exists, the guidance in `${CLAUDE_SKILL_DIR}/references/` is self-sufficient.
+**Composing with other skills:** if a skill is installed that matches a technology or task in the plan (e.g. a `supabase` skill when Supabase is the chosen database), invoke it for that part instead of working from general knowledge. If no matching skill exists, the guidance in `${CLAUDE_SKILL_DIR}/references/` is self-sufficient. For the visual layer of any project with a UI, the plan hands off to `brand-studio` when it's installed (see Phase 4).
 
 ## Phase 1: Idea Intake
 
@@ -97,6 +97,7 @@ Non-negotiables:
 - Every task is **self-contained** (one Claude Code session, no questions), **testable** (checkable "Done when", not a judgment call), and **sequenced** (depends only on tasks before it).
 - Logic tasks include their own unit tests; every milestone ends with a lint + typecheck + test gate.
 - Projects classified **Hard** in Phase 2 start with **Milestone 0: Spike** — prove the hardest piece before scaffolding anything.
+- **Projects with a UI get a brand & UI task** right after scaffolding and before any feature screens are built. If `brand-studio` is installed, the task is: *"Run the `brand-studio` skill: propose 3–5 directions, get the user's pick, write `BRAND.md` + tokens, confirm with the user."* Done when `BRAND.md` and the token files exist and the user has approved them. Mark it as a **human gate**, since it needs the user's choice and approval. Every later UI task then says "build per `BRAND.md`". Add a closing task in the final milestone: re-run `brand-studio` Phase 6 (rubric + accessibility/SEO audits) across the finished screens. If `brand-studio` isn't installed, note it as optional and keep a plain design-tokens task instead.
 
 ---
 
