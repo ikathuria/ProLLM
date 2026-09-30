@@ -23,3 +23,15 @@ Use tabular numerals (`font-variant-numeric: tabular-nums`) in tables and dashbo
 | Signal | #FFFFFF | #111111 | #666666 | #FF4F00 |
 
 Always verify contrast of text and accent-on-background (WCAG AA 4.5:1 body, 3:1 large/UI).
+
+## Louder palettes (energy 4–5)
+| Name | Background | Text | Surface / block | Accent(s) |
+|---|---|---|---|---|
+| Riso | #FFF8E7 | #1A1A1A | #FF6B9D (pink blocks) | #0078BF (blue), #FFE800 (yellow) |
+| Tomato | #FFF4EC | #2B0F0A | #FF4A1C (full-bleed) | #1B4332 (deep green) |
+| Electric | #0B0B0F | #F5F5F0 | #1E1BFF (cobalt blocks) | #C6FF3D (acid) |
+| Candy | #FDF2FF | #2A0F3A | #FFB5E8 | #7B2CFF, #00C2A8 |
+| Terracotta pop | #F3E9DC | #2D1B12 | #C65D3B | #F2B134 (marigold), #264653 |
+
+Pair loud palettes with loud type: Bricolage Grotesque / Archivo Black / Instrument Serif at
+display sizes, and large color-blocked sections rather than small accents.
