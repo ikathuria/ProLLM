@@ -4,34 +4,59 @@ Skills for creating projects with LLMs. Each top-level folder is a self-containe
 
 ## Skills
 
-| Skill | What it does |
-|---|---|
-| [`project-planner`](project-planner/) | Turns a raw idea into a Claude Code-ready build plan: research, free-first tech stack selection, milestone breakdown with testable tasks, and a `PLAN.md` + `PROJECT.md` pair structured for autonomous execution. Delegates research to `idea-research` when installed. |
-| [`idea-research`](idea-research/) | Multi-agent idea validation. Fans out five parallel research agents — competitors, community pain (Reddit/HN), video demand (YouTube), news & search trends, technical feasibility — with per-agent model and search-budget tuning, synthesized into a `RESEARCH.md` with an honest build / don't-build verdict. A quick inline mode is available on request. |
-| [`brand-studio`](brand-studio/) | End-to-end anti-"AI slop" UI redesign: reads the whole project, renders 3–5 distinct design directions as previews, turns the chosen one into `BRAND.md` + design tokens in the repo, confirms with you, then rebrands the UI and verifies it with screenshot-based rubric scoring plus accessibility (axe, contrast, keyboard) and SEO (meta, OG, headings, Lighthouse) audits. |
-| [`paper-reader`](paper-reader/) | Grounded paper reading and literature reviews. Single-paper mode writes locator-tagged `PAPER_NOTES.md` and verifies every number and quote. Lit-review mode: scoping questions → protocol with fixed inclusion criteria → logged search (peer-reviewed first, preprint fallback, snowballing) → title/abstract then full-text screening → open-access PDF download → literature review table + thematic synthesis → gap matrix with each gap validated by a targeted search. |
-| [`code-reviewer`](code-reviewer/) | Convention-aware, low-noise code review: gathers repo context, reviews in focused passes (correctness, security, data/concurrency, API, tests, conventions, performance), verifies every finding against the code, and reports severity-ranked findings with file:line, failure scenario, and fix. Optional `--fix` / PR comments. |
-| [`hackathon-planner`](hackathon-planner/) | Plans a hackathon entry to win: fetches the event's live rules and judging criteria (flagging AI-assisted judging), studies past winners, scores ideas against that rubric plus insider edge / demo moment / evidence / risk, and outputs a `HACKATHON_PLAN.md` with an evidence plan, demo-video script, and a timeline sized in coding-agent sessions and human gates rather than human hours, with a feature freeze and early-submit margin. Grounded in a Sept 2026 review of ~36 winning projects across 9 AI hackathons. |
+Six skills, roughly in the order you'd use them on a project.
 
-The skills compose: `project-planner` invokes `idea-research` for its research phase when both are installed, but each works standalone.
+### Plan
+
+| Skill | What it does | Try |
+|---|---|---|
+| [`idea-research`](idea-research/) | Multi-agent idea validation. Five parallel research agents cover competitors, community pain (Reddit/HN), video demand (YouTube), news & search trends, and technical feasibility, each with its own model and search budget. Their findings are combined into a `RESEARCH.md` with an honest build / don't-build verdict. A quick inline mode is available on request. | *"Is there a market for a habit tracker for ADHD?"* |
+| [`project-planner`](project-planner/) | Turns a raw idea into a Claude Code-ready build plan: research, free-first stack selection, milestones with testable tasks, and a `PLAN.md` + `PROJECT.md` pair built for autonomous execution. Hands research to `idea-research` when it's installed. | *"I have an idea for an app that…"* |
+| [`hackathon-planner`](hackathon-planner/) | Plans a hackathon entry to win. It fetches the event's live rules and judging criteria (flagging AI-assisted judging), studies past winners, and scores ideas against that rubric plus insider edge, demo moment, evidence, and risk. Outputs a `HACKATHON_PLAN.md` with an evidence plan, a demo-video script, and a timeline sized in coding-agent sessions rather than human hours. Grounded in a Sept 2026 review of ~36 winning projects across 9 AI hackathons. | *"Help me win the X build week"* |
+
+### Build & design
+
+| Skill | What it does | Try |
+|---|---|---|
+| [`brand-studio`](brand-studio/) | End-to-end anti-"AI slop" UI redesign. It reads the whole project and renders 3–5 distinct design directions as previews. You pick one, it writes `BRAND.md` + design tokens into the repo, confirms them with you, then rebrands the UI. It avoids both template slop and sterile over-minimalism, and it verifies the result with screenshot rubric scoring plus before/after accessibility (axe, contrast, keyboard) and SEO (meta, OG, headings, Lighthouse) audits. | *"Make this UI look better"* · *"Rebrand my app"* |
+
+### Review & research
+
+| Skill | What it does | Try |
+|---|---|---|
+| [`code-reviewer`](code-reviewer/) | Convention-aware, low-noise code review. It gathers repo context, reviews in focused passes (correctness, security, data/concurrency, API, tests, conventions, performance), and verifies every finding against the code. Reports severity-ranked findings with file:line, a failure scenario, and a fix. Can apply fixes or post PR comments. | *"Review my branch before I push"* |
+| [`paper-reader`](paper-reader/) | Grounded paper reading and literature reviews. Single-paper mode writes a locator-tagged `PAPER_NOTES.md` and verifies every number and quote. Lit-review mode sets a protocol, runs a logged search, screens results, downloads open-access PDFs, and produces a review table, a synthesis, and a gap matrix in which every gap is checked with a targeted search. | *"Summarize arXiv 2401.01234"* · *"Lit review on RAG evaluation"* |
+
+### How they compose
+
+- `project-planner` runs `idea-research` for its research phase. `hackathon-planner` reuses parts of `idea-research` and `project-planner`'s stack guide.
+- `hackathon-planner` hands the visual layer to `brand-studio`.
+- Any existing `RESEARCH.md`, `PLAN.md`, or `BRAND.md` is read and reused rather than regenerated.
+- Every skill also works standalone.
 
 ## Installation
 
-Copy a skill folder into your skills directory:
+**Symlink (recommended).** Edits and `git pull` update the installed skills live:
 
-**Personal (all projects):**
+```sh
+git clone https://github.com/ikathuria/ProLLM.git
+cd ProLLM
+for s in */; do ln -sfn "$PWD/${s%/}" ~/.claude/skills/"${s%/}"; done
+```
+
+**Copy** a single skill instead:
 
 ```sh
 # macOS / Linux
-cp -r project-planner ~/.claude/skills/
+cp -r brand-studio ~/.claude/skills/
 
 # Windows (PowerShell)
-Copy-Item -Recurse project-planner "$env:USERPROFILE\.claude\skills\"
+Copy-Item -Recurse brand-studio "$env:USERPROFILE\.claude\skills\"
 ```
 
 **Project-level (shared with collaborators):** copy into `.claude/skills/` inside the project repo.
 
-Then just describe what you want to Claude — e.g. *"I have an idea for an app that..."* — and the skill triggers automatically. You can also invoke it explicitly with `/project-planner`.
+Then describe what you want and the matching skill triggers automatically, or invoke one explicitly, e.g. `/brand-studio`. Start a new session after installing.
 
 ### Optional: better Reddit research
 
