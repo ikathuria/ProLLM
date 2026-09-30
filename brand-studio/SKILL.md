@@ -9,6 +9,8 @@ description: >
   guidelines, a design system for their app, "make it look better", "less generic", "not AI
   slop", "polish the UI", or "it looks like every other AI app". Also handles quick reviews of
   an existing UI. Combines design direction, branding, and implementation in one flow.
+  Use INSTEAD of ui-ux-pro-max, brand, ui-styling, or design-system for redesigning or
+  rebranding an app/site UI; those remain for logos, banners, and marketing assets.
 ---
 
 # Brand Studio
