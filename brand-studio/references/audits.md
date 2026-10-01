@@ -34,6 +34,65 @@ needs at least 4.5:1, large text and UI parts at least 3:1. Record the table in 
 - Zoom and reflow: at 200% zoom and 320px width nothing is cut off and there's no horizontal scroll.
 - Color is never the only way information is shown (errors, status, charts).
 
+## Responsiveness (all projects)
+
+**1. Width sweep.** For each key screen, use `resize_window` in the built-in browser (custom
+width/height, then reload) and screenshot at:
+
+| Width | Represents |
+|---|---|
+| 320 | small phone (iPhone SE), the reflow floor |
+| 375 / 390 | standard phone |
+| 768 | tablet portrait |
+| 1024 | tablet landscape / small laptop |
+| 1280 | laptop |
+| 1440 | desktop |
+| 1920 | large desktop |
+| 2560 | ultra-wide (quick check that content stays readable, not stretched) |
+
+Also check phone landscape (e.g. 812×375). Reset the viewport to `desktop` when done. For
+native apps, use the simulator on the smallest and largest supported devices and an iPad or
+tablet if supported.
+
+**2. Per-width automated check.** Run this at every width:
+
+```js
+(() => {
+  const vw = document.documentElement.clientWidth, touch = vw < 1024, out = [];
+  if (document.documentElement.scrollWidth > vw) out.push(`page h-scroll: ${document.documentElement.scrollWidth}px > ${vw}px`);
+  for (const el of document.querySelectorAll('body *')) {
+    const cs = getComputedStyle(el); if (cs.display === 'none' || cs.visibility === 'hidden') continue;
+    const r = el.getBoundingClientRect(); if (!r.width || !r.height) continue;
+    const id = el.tagName.toLowerCase() + (el.id ? '#' + el.id : '') + (el.className && typeof el.className === 'string' ? '.' + el.className.trim().split(/\s+/)[0] : '');
+    if (r.right > vw + 1 && cs.position !== 'fixed') out.push(`overflows right: ${id} (${Math.round(r.right)}px)`);
+    if (el.scrollWidth > el.clientWidth + 1 && ['visible','clip','hidden'].includes(cs.overflowX) && el.children.length === 0) out.push(`clipped text: ${id}`);
+    if (touch && el.matches('a,button,input,select,textarea,[role=button],[tabindex]') && (r.width < 44 || r.height < 44)) out.push(`small target ${Math.round(r.width)}×${Math.round(r.height)}: ${id}`);
+    if (touch && el.matches('p,li,td,label,input') && parseFloat(cs.fontSize) < 16) out.push(`small text ${cs.fontSize}: ${id}`);
+  }
+  return { vw, issues: [...new Set(out)].slice(0, 40) };
+})()
+```
+
+Inline links within paragraphs may fall under 44px tall. That's acceptable if they're spaced,
+so judge those by hand.
+
+**3. Manual checks:**
+- **Breakpoint transitions:** drag through ±50px around each breakpoint. Nothing should jump,
+  overlap or collapse oddly at in-between widths.
+- **Layout intent:** at every width the layout should look designed, not just stacked. Nav
+  becomes a menu that works with touch and keyboard, tables become cards or scroll inside
+  their container, multi-column grids reduce sensibly, and the hero type scales down
+  (`clamp()`) instead of wrapping one word per line.
+- **Touch:** nothing important is only reachable by hover. Hover styles use
+  `@media (hover: hover)`.
+- **Content stress:** long headings and names, ~30% longer text (translation), empty data and
+  very full data, and large numbers. Text truncates with an ellipsis or wraps cleanly, never overlaps.
+- **Media:** images use `srcset`/`sizes` or the framework's image component, keep their aspect
+  ratio, and art-direct hero images on mobile when cropping hides the subject.
+- **Viewport units:** full-height sections use `dvh`/`svh` (not raw `100vh`) so mobile browser
+  bars don't cut them off. Respect safe areas (`env(safe-area-inset-*)`) for fixed bars.
+- **Readability on wide screens:** body text stays at most ~75ch wide at 1920 and 2560.
+
 ## SEO (web projects with public pages; skip for auth-only apps)
 
 Per public route, check with a quick DOM script in the browser plus the source:
@@ -72,6 +131,7 @@ Audit        Before   After   Notes
 axe (crit/serious)  3/7  0/0
 Contrast pairs fail  4    0
 Keyboard flows       ✗    ✓     modal focus trap fixed
+Responsive issues (320–2560)  12  0  nav overflow at 768, table cards on mobile
 SEO checks passed    6/11 11/11 added OG image, fixed double H1
 Lighthouse A11y/SEO/Perf  78/82/64  98/100/71
 ```

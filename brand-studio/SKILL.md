@@ -6,7 +6,7 @@ description: >
   rendered previews, turns the chosen one into brand guidelines saved in the repo (BRAND.md +
   design tokens), confirms them with the user, then rebrands the UI and verifies it with
   screenshots. Use when the user asks for a better/new/redesigned UI, a rebrand, brand
-  guidelines, a design system for their app, an accessibility or SEO check of their UI, "make it look better", "less generic", "not AI
+  guidelines, a design system for their app, an accessibility, responsiveness, or SEO check of their UI, "make it look better", "less generic", "not AI
   slop", "polish the UI", or "it looks like every other AI app". Also handles quick reviews of
   an existing UI. Combines design direction, branding, and implementation in one flow.
   Use INSTEAD of ui-ux-pro-max, brand, ui-styling, or design-system for redesigning or
@@ -52,7 +52,7 @@ Read before designing. Skim broadly, then write a short **project read** in chat
   `DESIGN.md`, Figma links, or design tokens.
 - **Screens that matter:** list the key routes/screens (landing, dashboard, core flow) and
   screenshot the current state if it runs (dev server + built-in browser, or the `run` skill).
-- **Baseline audits:** if it runs, record accessibility and SEO baselines for those screens
+- **Baseline audits:** if it runs, record accessibility, responsiveness and SEO baselines for those screens
   using `${CLAUDE_SKILL_DIR}/references/audits.md`, so Phase 6 can show before/after.
 - **Constraints:** brand assets that must stay (logo, legal colors), accessibility needs,
   dark mode, mobile, i18n.
@@ -83,7 +83,7 @@ project (not lorem):
 - Write self-contained HTML files to `design/options/option-N-<slug>.html` in the repo (or
   the scratchpad if the user doesn't want files in the repo), plus an `index.html` gallery
   that shows every option side by side with its name and pitch, and links to each full page.
-- Screenshot each at 1440 and 375 and check them against the ban list. Every option must
+- Screenshot each at 1440, 768 and 375 and check them against the ban list. Every option must
   pass. Don't show a strawman.
 - **Put the visuals in front of the user** using every surface available, in this order:
   1. **Open the gallery** in the built-in browser pane (`preview_start` with the file URL or a
@@ -152,14 +152,15 @@ commit in logical chunks if the user wants commits.
 
 ## Phase 6: Verify and critique
 
-Never declare it done without seeing it. Screenshot the key screens at 1440 and 375 (and in
+Never declare it done without seeing it. Screenshot the key screens at 1440, 768 and 375 (and in
 dark mode if supported), score against `${CLAUDE_SKILL_DIR}/references/critique-rubric.md`,
 fix anything below 3, and re-screenshot. Also check that the result matches BRAND.md. Ask
 yourself explicitly: *"Is this boring?"* If yes, push the signature moves before polishing.
 
-Then run the **accessibility and SEO audits** in `${CLAUDE_SKILL_DIR}/references/audits.md`
+Then run the **accessibility, responsiveness and SEO audits** in `${CLAUDE_SKILL_DIR}/references/audits.md`
 on every changed screen: an axe-core scan, the palette contrast matrix, manual keyboard and
-semantics checks, per-page SEO checks (title, description, H1/headings, OG image, favicons,
+semantics checks, a width sweep from 320 to 2560 with the overflow/target/text-size script
+and content stress tests, per-page SEO checks (title, description, H1/headings, OG image, favicons,
 alt text, canonical), and Lighthouse where possible. Fix every critical or serious issue and
 every regression from the Phase 1 baseline, then re-run. The work isn't done while audits fail.
 

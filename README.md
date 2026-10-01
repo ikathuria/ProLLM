@@ -18,7 +18,7 @@ Six skills, roughly in the order you'd use them on a project.
 
 | Skill | What it does | Try |
 |---|---|---|
-| [`brand-studio`](brand-studio/) | End-to-end anti-"AI slop" UI redesign. It reads the whole project and renders 3–5 distinct design directions as previews. You pick one, it writes `BRAND.md` + design tokens into the repo, confirms them with you, then rebrands the UI. It avoids both template slop and sterile over-minimalism, and it verifies the result with screenshot rubric scoring plus before/after accessibility (axe, contrast, keyboard) and SEO (meta, OG, headings, Lighthouse) audits. | *"Make this UI look better"* · *"Rebrand my app"* |
+| [`brand-studio`](brand-studio/) | End-to-end anti-"AI slop" UI redesign. It reads the whole project and renders 3–5 distinct design directions as previews. You pick one, it writes `BRAND.md` + design tokens into the repo, confirms them with you, then rebrands the UI. It avoids both template slop and sterile over-minimalism, and it verifies the result with screenshot rubric scoring plus before/after accessibility (axe, contrast, keyboard), responsiveness (320–2560px width sweep), and SEO (meta, OG, headings, Lighthouse) audits. | *"Make this UI look better"* · *"Rebrand my app"* |
 
 ### Review & research
 

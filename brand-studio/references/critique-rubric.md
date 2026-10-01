@@ -12,14 +12,14 @@ Score each 1–5 from the screenshots (not from the code). Anything < 3 must be 
 | 5 | **Spacing & alignment** | Consistent unit, strong alignment edges, varied section rhythm |
 | 6 | **Content realism** | Specific copy/data, no filler phrases from the ban list |
 | 7 | **Slop count** | Zero patterns from slop-patterns.md, including the sterile-slop section (score 5 − count, min 1) |
-| 8 | **Mobile** | 375px layout is designed, not just stacked; no horizontal scroll |
+| 8 | **Responsive** | Looks designed at every width (375, 768, 1440), not just stacked; no horizontal scroll; breakpoints transition cleanly |
 | 9 | **States & a11y** | Focus visible, contrast passes, empty/loading/error exist |
 
 Output format:
 
 ```
 Brief: <reference · type · palette · signature moves · energy>
-Scores: Distinct 4 · Energy 4 · Hierarchy 3 · Type 4 · Color 5 · Spacing 3 · Content 2 · Slop 4 · Mobile 3 · A11y 4
+Scores: Distinct 4 · Energy 4 · Hierarchy 3 · Type 4 · Color 5 · Spacing 3 · Content 2 · Slop 4 · Responsive 3 · A11y 4
 Fixes applied: <bullets>
 Remaining: <bullets or "none">
 ```

@@ -49,6 +49,8 @@ Loading: <Google Fonts / self-hosted, font-display: swap>. Numerals: tabular in 
 - Base unit: <4/8px> · Scale: <tokens>
 - Max widths: <content / wide> · Grid: <columns, gutters>
 - Section rhythm: <how tight/loose sections alternate>
+- Breakpoints: <sm/md/lg/xl px values = token names>
+- Responsive behavior: <how each key layout adapts. Nav → menu, tables → cards, grid columns per breakpoint, hero type `clamp()` range>
 
 ## Shape & depth
 - Radius scale: <values + where each applies>
