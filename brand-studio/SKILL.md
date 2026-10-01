@@ -75,22 +75,32 @@ direction includes:
    sections, custom pattern/illustration, unusual grid, a playful interaction).
 7. **Why it fits this project**, tied to the Phase 1 read.
 
-**Render them.** Descriptions alone aren't enough. For each direction, build a preview of the
-project's *real* key screen with real copy from the project (not lorem):
+**Render them and show them. Always.** The user must *see* every direction before choosing.
+A text description, a table, or a file path on its own never counts as presenting the options.
+For each direction, build a preview of the project's *real* key screen with real copy from the
+project (not lorem):
 
 - Write self-contained HTML files to `design/options/option-N-<slug>.html` in the repo (or
-  the scratchpad if the user doesn't want files in the repo), plus an `index.html` that
-  shows all options side by side.
-- If an Artifact tool with a Design type is available, you may publish the options there
-  instead (run its quickstart first), so they're viewable and shareable.
-- Screenshot each at 1440 and 375 and check them against the ban list before showing them.
-  Every option must pass. Don't show a strawman.
+  the scratchpad if the user doesn't want files in the repo), plus an `index.html` gallery
+  that shows every option side by side with its name and pitch, and links to each full page.
+- Screenshot each at 1440 and 375 and check them against the ban list. Every option must
+  pass. Don't show a strawman.
+- **Put the visuals in front of the user** using every surface available, in this order:
+  1. **Open the gallery** in the built-in browser pane (`preview_start` with the file URL or a
+     local static server). This is the default and must happen every time a browser is available.
+  2. **Send the screenshots** (desktop + mobile per option) with SendUserFile, or embed them
+     inline, so the options are visible right in the conversation.
+  3. If an Artifact tool is available, also **publish the gallery as an artifact** (via the
+     Design type's quickstart if listed) so it's shareable, and open it.
+  4. Only if no visual surface exists at all: give the absolute path to `index.html` and tell
+     the user to open it, and say plainly that you couldn't display it.
+- Then post a compact comparison table (name · feel · energy · best for) *beside* the visuals.
 
-Present a compact comparison table (name · feel · energy · best for) and the preview links.
+Re-show the updated previews the same way after every round of edits or mixing.
 
 ## Phase 3: User chooses
 
-Ask the user to pick one, or to mix ("option 2's type with option 4's colors"). Use
+Only after the previews are on screen, ask the user to pick one, or to mix ("option 2's type with option 4's colors"). Use
 AskUserQuestion with the option names when available. Iterate on the previews if asked.
 Don't proceed on your own guess.
 
