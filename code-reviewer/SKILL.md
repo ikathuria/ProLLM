@@ -4,7 +4,9 @@ description: >
   Thorough, low-noise code review of a diff, branch, PR, or set of files, judged against
   the repository's own conventions rather than generic style opinions. Trigger when the
   user asks to "review my code", "review this PR/branch/diff", "check my changes before I
-  push", "is this ready to merge", or "what's wrong with this code". Gathers project
+  push", "is this ready to merge", "what's wrong with this code", or a code review of a whole
+  repo or project (including when combined with other asks such as market or novelty, where it
+  handles only the code part). Gathers project
   context first, reviews in focused passes (correctness, security, data/concurrency,
   conventions, tests, simplicity), verifies every finding against the code before
   reporting it, and outputs a severity-ranked list with file:line, a failure scenario, and

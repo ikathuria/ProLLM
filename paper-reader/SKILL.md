@@ -122,3 +122,5 @@ quote matches its source (extract the text once with `pdftotext`, then `grep` fo
 number rather than re-reading the PDF) (`references/verification-checklist.md`), every gap has its validation
 search logged. End in chat with PRISMA counts, the top 3–5 validated gaps, the "Needs access"
 list, and the file paths.
+After delivering, suggest a fresh session for any follow-on work (experiments, writing, slides),
+starting from `LIT_REVIEW.md` / `notes/`. A long review session re-reads everything on every turn.

@@ -66,7 +66,9 @@ products they admire. At most 2–3 questions, and skip them if the answers are 
 
 Each direction is a genuinely different answer, not five shades of the same idea. Span the
 range: at least one safe-but-sharp option, one bold option, and one unexpected option. Each
-direction includes:
+direction differs from every other on at least two of: hue family, light vs dark base, type
+personality. Before rendering, list the palettes side by side; if two share a hue family or
+repeat a palette from an earlier round or another project, replace one. Each direction includes:
 
 1. **Name + one-line pitch** ("Field Manual: 1970s NASA documentation, utilitarian and confident").
 2. **Reference:** real products/eras/print styles. Never "modern and clean".
@@ -91,6 +93,9 @@ project (not lorem):
 - **Put the visuals in front of the user** using every surface available, in this order:
   1. **Open the gallery** in the built-in browser pane (`preview_start` with the file URL or a
      local static server). This is the default and must happen every time a browser is available.
+     Check `tabs_context` first. Screenshots and JS time out while the pane is hidden, and
+     `resize_window` needs an open preview tab, so (re)open one with `preview_start` before the
+     first screenshot. Never retry a timed-out screenshot unchanged.
   2. **Send the screenshots** (desktop + mobile per option) with SendUserFile, or embed them
      inline, so the options are visible right in the conversation.
   3. If an Artifact tool is available, also **publish the gallery as an artifact** (via the

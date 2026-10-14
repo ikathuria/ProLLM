@@ -5,7 +5,9 @@ results in a before/after table. The goal is no regressions and every blocker fi
 
 ## Accessibility (all projects)
 
-**1. Automated scan: axe-core** (web). In the built-in browser, on each key route:
+**1. Automated scan: axe-core** (web). In the built-in browser, navigate to each key route
+directly. Don't scan pages inside an iframe or the options gallery: axe rejects another frame's
+document with "axe.run arguments are invalid".
 
 ```js
 await new Promise(r => { const s = document.createElement('script');
