@@ -4,7 +4,7 @@ Skills for creating projects with LLMs. Each top-level folder is a self-containe
 
 ## Skills
 
-Six skills, roughly in the order you'd use them on a project.
+Seven skills, roughly in the order you'd use them on a project.
 
 ### Plan
 
@@ -26,6 +26,12 @@ Six skills, roughly in the order you'd use them on a project.
 |---|---|---|
 | [`code-reviewer`](code-reviewer/) | Convention-aware, low-noise code review. It gathers repo context, reviews in focused passes (correctness, security, data/concurrency, API, tests, conventions, performance), and verifies every finding against the code. Reports severity-ranked findings with file:line, a failure scenario, and a fix. Can apply fixes or post PR comments. | *"Review my branch before I push"* |
 | [`paper-reader`](paper-reader/) | Grounded paper reading and literature reviews. Single-paper mode writes a locator-tagged `PAPER_NOTES.md` and verifies every number and quote. Lit-review mode sets a protocol, runs a logged search, screens results, downloads open-access PDFs, and produces a review table, a synthesis, and a gap matrix in which every gap is checked with a targeted search. | *"Summarize arXiv 2401.01234"* · *"Lit review on RAG evaluation"* |
+
+### Improve
+
+| Skill | What it does | Try |
+|---|---|---|
+| [`self-improve`](self-improve/) | An evidence-based retro on your own Claude Code usage that then fixes your skills. A stdlib script mines local transcripts (`~/.claude/projects`) for friction: corrections, interrupts, tool errors, retry loops, edit churn, cost outliers. Each finding cites session IDs and quotes and is assigned to a layer (skill instruction, trigger, tooling, project CLAUDE.md, habit, or environment). It proposes minimal diffs to the skills you own, applies only the ones you approve, and keeps a ledger so the next run checks whether the changes helped. Plugin and external skills get suggestions only. | *"Improve my skills from the last two weeks"* · *"Why does brand-studio keep failing?"* |
 
 ### How they compose
 
