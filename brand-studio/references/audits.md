@@ -37,7 +37,9 @@ needs at least 4.5:1, large text and UI parts at least 3:1. Record the table in 
 ## Responsiveness (all projects)
 
 **1. Width sweep.** For each key screen, use `resize_window` in the built-in browser (custom
-width/height, then reload) and screenshot at:
+width/height, then reload) and run the step 2 check at each of these widths. Screenshots cost far
+more tokens than the script, so take them only at 375, 768 and 1440, plus any width where the
+script flags a problem (use `scale: 0.5` unless you need to read small text):
 
 | Width | Represents |
 |---|---|

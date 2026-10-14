@@ -42,7 +42,10 @@ Ask only what's not already known:
 
 ## Phase 2: Hackathon recon
 
-**Read `${CLAUDE_SKILL_DIR}/references/recon-guide.md` now.** Steps: (0) if no event chosen, survey current open online AI hackathons and shortlist by fit/prize/deadline; (1) fetch the rules and extract the Hackathon Facts table; (2) classify the judging model and convert weights into build-effort shares; (3) study past winners of this event/series (5–8 project pages, judge quotes); (4) scan the current field for saturation.
+**Read `${CLAUDE_SKILL_DIR}/references/recon-guide.md` now.** Steps: (0) if no event chosen, survey current open online AI hackathons and shortlist by fit/prize/deadline; (1) fetch the rules and extract the Hackathon Facts table; (2) classify the judging model and convert weights into build-effort shares; (3) study past winners of this event/series (5–8 project pages, judge quotes); (4) scan the current field for saturation. Steps 3–4 are fetch-heavy: run them in one
+subagent (`model: "sonnet"`, budget about 20 fetches, "stop when results repeat"). It returns a
+compact table (project, prize, what won it, judge quote) rather than page dumps. Do steps 1–2
+yourself, because rules need exact reading.
 
 Non-negotiables:
 - **Detect whether judging is AI-assisted/automated** (search the rules for "AI", "automated", "LLM"). If yes or unknown, the evidence plan must be text-legible and verifiable (see Phase 4).

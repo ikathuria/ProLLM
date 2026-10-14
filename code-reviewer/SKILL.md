@@ -50,7 +50,9 @@ passes catch more than one mixed read:
 7. **Performance** — only where it plausibly matters (N+1 queries, hot loops, unbounded growth).
 
 For diffs over ~500 lines or spanning unrelated areas, split by area and run passes in
-parallel subagents, each given the context from Stage 2; merge and dedupe their findings.
+parallel subagents (`model: "sonnet"`), each given the context from Stage 2 and only its
+slice of the diff. They return candidate findings, at most 8 each; merge and dedupe them. Stage 4
+verification stays with the main model.
 
 ## Stage 4 — Verify every finding
 

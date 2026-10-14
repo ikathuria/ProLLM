@@ -42,7 +42,9 @@ Two user checkpoints are mandatory in the full flow: **choosing a direction** (P
 
 ## Phase 1: Understand the project
 
-Read before designing. Skim broadly, then write a short **project read** in chat:
+Read before designing. Skim broadly but cheaply: list files and grep for config and tokens
+rather than reading every component. For a large repo, hand the skim to one Explore subagent
+(`model: "haiku"`) that returns the facts below. Then write a short **project read** in chat:
 
 - **What it is and who it's for:** README, docs, PLAN.md/PROJECT.md, landing copy, package
   name, marketing pages. Who are the users, what's the job, what's the tone (serious tool,
@@ -83,7 +85,8 @@ project (not lorem):
 - Write self-contained HTML files to `design/options/option-N-<slug>.html` in the repo (or
   the scratchpad if the user doesn't want files in the repo), plus an `index.html` gallery
   that shows every option side by side with its name and pitch, and links to each full page.
-- Screenshot each at 1440, 768 and 375 and check them against the ban list. Every option must
+- Screenshot each at 1440, 768 and 375 and check them against the ban list. For your own
+  checks use `scale: 0.5`. Only the screenshots you send the user need full size. Every option must
   pass. Don't show a strawman.
 - **Put the visuals in front of the user** using every surface available, in this order:
   1. **Open the gallery** in the built-in browser pane (`preview_start` with the file URL or a
@@ -154,7 +157,7 @@ commit in logical chunks if the user wants commits.
 
 Never declare it done without seeing it. Screenshot the key screens at 1440, 768 and 375 (and in
 dark mode if supported), score against `${CLAUDE_SKILL_DIR}/references/critique-rubric.md`,
-fix anything below 3, and re-screenshot. Also check that the result matches BRAND.md. Ask
+fix anything below 3, and re-screenshot only the screens and widths you changed. Also check that the result matches BRAND.md. Ask
 yourself explicitly: *"Is this boring?"* If yes, push the signature moves before polishing.
 
 Then run the **accessibility, responsiveness and SEO audits** in `${CLAUDE_SKILL_DIR}/references/audits.md`

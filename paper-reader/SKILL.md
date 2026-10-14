@@ -86,7 +86,10 @@ ask the user to supply the PDF; screen/extract it from the abstract only, flagge
 ## Stage 5 — Extract and appraise each paper
 
 For each included paper, read the full text using `single-paper.md` (stages 1–2 evidence map)
-and save `notes/<id>.md`. Also record a quick quality appraisal: peer-reviewed?, sample/dataset
+and save `notes/<id>.md`. With more than 3 papers, give each batch of about 5 papers to a
+subagent (`model: "sonnet"`), running the batches in parallel. Each one gets the protocol, the
+`single-paper.md` path and the PDF paths, writes the notes files, and returns only the file
+paths plus 3 lines per paper. The main model works from the notes, not the PDFs. Also record a quick quality appraisal: peer-reviewed?, sample/dataset
 size, baselines adequate?, code/data released?, stated limitations. Every extracted field
 carries a locator (§, Table, Fig.).
 
@@ -115,6 +118,7 @@ Write `GAP_MATRIX.md` from `${CLAUDE_SKILL_DIR}/references/gap-matrix-template.m
 ## Stage 8 — Verify and report
 
 Before delivering, check: every cited paper resolves (DOI/arXiv link works), every number and
-quote matches its source (`references/verification-checklist.md`), every gap has its validation
+quote matches its source (extract the text once with `pdftotext`, then `grep` for each quote or
+number rather than re-reading the PDF) (`references/verification-checklist.md`), every gap has its validation
 search logged. End in chat with PRISMA counts, the top 3–5 validated gaps, the "Needs access"
 list, and the file paths.
