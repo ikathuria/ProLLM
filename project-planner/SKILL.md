@@ -1,18 +1,15 @@
 ---
 name: project-planner
 description: >
-  Full project planning skill for turning a raw idea into an actionable, Claude Code-ready plan.
-  Trigger this skill whenever the user describes a new app, tool, service, SaaS idea, side project,
-  or anything they want to build — even if they haven't asked for a plan explicitly. Also trigger
-  when the user says things like "I have an idea", "I want to build X", "help me plan this",
-  or "what stack should I use". (For research-only asks like "is this feasible" or "can this
-  make money" without a full plan, the idea-research skill handles it.) The output is a
-  structured PLAN.md plus a living PROJECT.md context tracker, ready to commit to a GitHub repo
-  and used by Claude Code to execute autonomously. Always use this skill for new-project
-  ideation — do not attempt ad-hoc planning without it. Do NOT trigger for features, fixes, or
-  refactors inside an existing codebase ("build a login page", "add dark mode") — only for
-  starting a new project or product. Do NOT trigger for hackathon entries (a competition
-  with judges and a deadline) — the hackathon-planner skill handles those.
+  Turns a raw idea into an actionable, Claude Code-ready plan: a PLAN.md plus a living
+  PROJECT.md tracker for autonomous execution. Trigger whenever the user describes a new app,
+  tool, service, SaaS idea or side project, even without asking for a plan: "I have an idea",
+  "I want to build X", "help me plan this", "what stack should I use". Always use it for
+  new-project ideation. Research-only asks ("is this feasible", "can this make money") go to
+  idea-research; hackathon entries go to hackathon-planner. Do NOT trigger for features, fixes
+  or refactors inside an existing codebase. EXECUTE mode: when PLAN.md/PROJECT.md exist and the
+  user says "continue the project", "do the next milestone", "finish what's left" or "finish
+  everything without me", run bounded milestone batches instead of open-ended work.
 ---
 
 # Project Planner Skill
@@ -22,6 +19,27 @@ Turns a raw idea into a complete, actionable plan. Outputs a `PLAN.md` (build pl
 **How to use the reference files:** each phase below has core rules inline and, where noted, a detailed guide in `${CLAUDE_SKILL_DIR}/references/`. Read the referenced file when you reach that phase — don't load them all up front.
 
 **Composing with other skills:** if a skill is installed that matches a technology or task in the plan (e.g. a `supabase` skill when Supabase is the chosen database), invoke it for that part instead of working from general knowledge. If no matching skill exists, the guidance in `${CLAUDE_SKILL_DIR}/references/` is self-sufficient. For the visual layer of any project with a UI, the plan hands off to `brand-studio` when it's installed (see Phase 4).
+
+## Execute mode: bounded milestone runs
+
+Use when `PLAN.md`/`PROJECT.md` exist and the user wants the project built rather than planned.
+Open-ended asks ("finish everything without my intervention") tend to drift, rewrite the same
+files repeatedly, and end with the user asking what's left. Run in bounded batches instead:
+
+1. **Read state.** `PROJECT.md` (status, decisions), `PLAN.md` (milestones), `HANDOFF.md` if present,
+   `git log --oneline -10`. Find the first incomplete milestone.
+2. **Propose a batch.** List the next 1–3 milestones with their tasks and "Done when" checks,
+   anything that needs the user (keys, accounts, decisions, payments), and a rough size in agent
+   sessions. **Wait for the user's OK.** If they said "without my intervention", still show the
+   batch, then proceed unless they object; batch size stays capped at 3.
+3. **Build one milestone at a time.** Fetch current docs before using any library. After each
+   milestone: run its "Done when" checks and the test suite, update `PROJECT.md`, commit with
+   the milestone name. If a check fails twice, stop and report rather than looping.
+4. **Stop at the batch end.** Report what's done (with commits), what's verified, what needs
+   the user, and the next batch. If the session is long, offer `handoff` before continuing.
+
+Never mark a task done without its check passing. Never expand scope beyond PLAN.md without
+asking; note new ideas in PROJECT.md's backlog instead.
 
 ## Phase 1: Idea Intake
 
