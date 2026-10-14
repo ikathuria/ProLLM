@@ -34,7 +34,7 @@ Eleven skills, roughly in the order you'd use them on a project.
 |---|---|---|
 | [`handoff`](handoff/) | Ends a long or drifting session without losing anything. It writes a short `HANDOFF.md` (state, decisions, open threads, gotchas, key files, next step), syncs `PROJECT.md`, and gives you a one-line prompt for a fresh session. Long sessions re-read their whole history on every turn, so this is the biggest cost saver for multi-day work. | *"Wrap up, I'm switching to the paper draft"* |
 | [`long-run`](long-run/) | Launches long jobs (training, sweeps, evals) safely. It reviews the script, smoke-tests it end to end on a tiny input, estimates time and peak memory against the machine, adds checkpoints and resume, and runs the job detached. It then checks the log cheaply instead of polling from the main session. | *"Start the training run"* · *"Is my sweep still going?"* |
-| [`outreach`](outreach/) | Job-search messages: referral asks, recruiter replies, follow-ups, cold emails. It works from a private profile (`~/.claude/outreach/PROFILE.md`, built from your project files on first run) so you never re-explain your background. It keeps facts like work authorization current and logs what was sent and what got replies. | *"Ask Priya for a referral for these two roles"* |
+| [`outreach`](outreach/) | Job-search messages: referral asks, recruiter replies, follow-ups, cold emails. It works from a private profile (`~/.claude/outreach/PROFILE.md`, built from your project files on first run) so you never re-explain your background. It keeps facts like work authorization current and logs what was sent and what got replies, using your job-search project's own tracker if you have one. | *"Ask Priya for a referral for these two roles"* |
 
 ### Improve
 

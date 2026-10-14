@@ -49,10 +49,13 @@ Don't send anything; the user sends it.
 
 ## Step 4: Log
 
-Append to `~/.claude/outreach/LOG.md`: date, person (name + company), channel, type of ask, and
+If the user has a job-search project that already tracks outreach (a recruiters/outreach table,
+an API, or a CLI, as described in its PROJECT.md), use that: read the person's history from it
+before drafting, and log new messages and replies there. Don't keep a second log. Otherwise,
+append to `~/.claude/outreach/LOG.md`: date, person (name + company), channel, type of ask, and
 the message's first line. When the user later says someone replied (or didn't), record the
 outcome. Before drafting to someone already in the log, read their entries and don't repeat an
 ask too soon (wait ~7 days before a follow-up unless they replied).
 
-Every ~10 logged outcomes, note in PROFILE.md's *What works* section which openings and asks
+Every ~10 recorded outcomes, note in PROFILE.md's *What works* section which openings and asks
 got replies.
