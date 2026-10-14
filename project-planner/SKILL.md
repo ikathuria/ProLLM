@@ -43,7 +43,7 @@ Do NOT proceed to Phase 2 until you have enough to answer these. It's OK to infe
 
 **If `RESEARCH.md` already exists** for this idea (repo root or current directory), read it instead of re-researching — unless it's stale (older than ~3 months) or the idea has materially changed; then ask whether to refresh it.
 
-**If the `idea-research` skill is installed, invoke it now and skip the rest of this phase.** It runs deep mode by default — five parallel research subagents — falling back to quick mode only if the user explicitly asked for a fast pass. Pass it the answers from Phase 1 so it doesn't re-ask. It writes `RESEARCH.md` and hands back its verdict block without announcing it in chat — you own the single user-facing summary (Phase 6).
+**If the `idea-research` skill is installed, invoke it now and skip the rest of this phase.** It runs deep mode by default — four or five parallel research subagents — falling back to quick mode only if the user explicitly asked for a fast pass. Pass it the answers from Phase 1 so it doesn't re-ask. It writes `RESEARCH.md` and hands back its verdict block without announcing it in chat — you own the single user-facing summary (Phase 6).
 
 **Fallback (idea-research not installed): read `${CLAUDE_SKILL_DIR}/references/research-guide.md`** — a condensed playbook covering market (competitors, demand, positioning), feasibility (the spike, cost audit, easy/medium/hard), monetization, and kill criteria.
 

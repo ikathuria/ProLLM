@@ -48,21 +48,34 @@ Everything downstream inherits this framing, so get it right before launching an
 
 ## Phase 2A: DEEP mode — fan out research agents
 
-Read `${CLAUDE_SKILL_DIR}/references/report-schema.md`. Then build five prompts by filling the placeholders in each brief and appending the report schema to each:
+Read `${CLAUDE_SKILL_DIR}/references/report-schema.md`. Then build the prompts by filling the placeholders in each brief and appending the report schema to each:
 
 | Agent | Brief | Covers |
 |---|---|---|
 | Competitor | `${CLAUDE_SKILL_DIR}/references/competitor-brief.md` | Players, pricing, complaints, category pricing models |
 | Community | `${CLAUDE_SKILL_DIR}/references/community-brief.md` | Reddit + HN + forums: verbatim pain, DIY workarounds, willingness to pay |
-| Video demand | `${CLAUDE_SKILL_DIR}/references/video-brief.md` | YouTube metadata as demand signal |
+| Video demand (conditional) | `${CLAUDE_SKILL_DIR}/references/video-brief.md` | YouTube metadata as demand signal |
 | News & trends | `${CLAUDE_SKILL_DIR}/references/trends-brief.md` | Funding/shutdowns/regulation, Google Trends (with proxies), momentum |
 | Feasibility | `${CLAUDE_SKILL_DIR}/references/feasibility-brief.md` | The spike, cost audit, prior-art failures |
 
 Launch rules:
-- **All five in a single message** so they run in parallel (general-purpose agents; they need WebSearch/WebFetch).
+- **Preflight permissions first.** Background agents can't show permission prompts. If WebSearch
+  or WebFetch isn't already allowed, every agent dies with "permission stream closed" and the
+  whole batch has to be relaunched. Before launching, run one WebSearch (a seed term) and one
+  WebFetch (any competitor URL) yourself, so any prompt appears while the user is present.
+  Suggest they always allow both (`/permissions`, or the `fewer-permission-prompts` skill).
+- **Relaunch only what failed.** If an agent returns with tool or permission errors and no
+  report, relaunch that one agent. Never relaunch the batch.
+- **All agents in a single message** so they run in parallel (general-purpose agents; they need WebSearch/WebFetch).
 - Each prompt must be fully self-contained — subagents do not see this conversation.
 - Do not edit the schema or honesty rules when composing prompts; they're what makes reports mergeable and trustworthy.
 - Subagents inherit MCP tools. If a Reddit MCP server is connected (e.g. reddit-mcp-buddy — look for tools like `search_reddit` / `get_post_details`), the community agent will use it per its brief; mention in its prompt that the tools are available. Without it, the brief's search-snippet fallback applies automatically.
+
+**Video agent is conditional.** Launch it only for consumer, creator, visual, hobby or
+how-to domains, where people actually search YouTube. For B2B, developer tools, infrastructure
+or regulated domains, skip it. Instead, add one line to the trends agent's prompt: "Also run 2–3
+YouTube searches for {CATEGORY} and report view counts of the top results." Say which choice you
+made in RESEARCH.md.
 
 ### Model and effort per agent
 
@@ -70,13 +83,17 @@ Pass a `model` on each Agent launch and append a budget line to each prompt. Def
 
 | Agent | Model | Budget line to append |
 |---|---|---|
-| Competitor | sonnet | "Budget: ~20–25 searches/fetches. Depth on the top 3–5 players beats breadth." |
-| Community | sonnet | "Budget: ~20–25 searches/fetches. Prioritize fetching full threads over collecting more links." |
-| Video demand | haiku | "Budget: ~10–15 searches. Metadata collection only — don't over-analyze." |
-| News & trends | sonnet | "Budget: ~15–20 searches/fetches." |
-| Feasibility | sonnet | "Budget: ~20–25 searches/fetches. Fetch real pricing pages; secondhand pricing is stale." |
+| Competitor | sonnet | "Budget: ~20 searches/fetches in ≤10 turns. Depth on the top 3–5 players beats breadth." |
+| Community | sonnet | "Budget: ~20 searches/fetches in ≤12 turns. Full threads on the best 3–5 beat more links." |
+| Video demand | haiku | "Budget: ~10 searches in ≤5 turns. Metadata collection only — don't over-analyze." |
+| News & trends | sonnet | "Budget: ~15 searches/fetches in ≤8 turns." |
+| Feasibility | sonnet | "Budget: ~20 searches/fetches in ≤10 turns. Fetch real pricing pages; secondhand pricing is stale." |
 
 - Every budget line ends with: "Stop early when marginal results start repeating what you already have."
+- **Turns, not searches, drive cost.** Each turn re-reads everything the agent has gathered so
+  far, so one agent at 46 turns costs several times as much as one at 12 doing the same searches.
+  The efficiency rules in `report-schema.md` (parallel calls, focused fetches) are what keep
+  agents within the turn cap.
 - Rationale: video work is mechanical metadata collection (haiku is enough); the others need judgment about evidence quality (sonnet).
 - Valid `model` values (per current Claude Code docs): an alias (`sonnet`, `opus`, `haiku`, `fable`), a full model ID, or `inherit`; omitted defaults to inherit. The per-invocation parameter overrides any agent-definition frontmatter but is itself overridden by `CLAUDE_CODE_SUBAGENT_MODEL` if the user set it.
 - There is no per-invocation **effort** parameter — for these ad-hoc launches, the budget line IS the effort control. (Effort can only be fixed declaratively, via an `effort` field in a custom agent definition under `.claude/agents/`; this skill deliberately uses ad-hoc general-purpose agents to stay zero-setup.)

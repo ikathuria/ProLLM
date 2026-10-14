@@ -33,6 +33,18 @@ Real user/author words, quoted exactly, each with source URL. No paraphrasing.
 [high / medium / low] — [one sentence why]
 ```
 
+## Efficiency rules (binding)
+
+Every turn re-reads everything gathered so far, so the number of turns is the main cost.
+1. **Batch independent calls.** Put 3–5 searches (or fetches) in one turn as parallel tool calls.
+   Don't run one search, read it, then run the next, unless the next really depends on the result.
+2. **No narration between calls.** Don't write "Now I'll search for…". Just make the calls.
+3. **Focused fetches.** Give every WebFetch a narrow prompt ("extract pricing tiers and limits",
+   "list complaints with dates"), never "summarize this page". Don't refetch a page you already have.
+4. **Load tools once.** If WebSearch/WebFetch are deferred, load both in a single ToolSearch call.
+5. **Respect the turn cap in your budget line.** When you hit it, write the report with what you
+   have and list the gaps under *Could not access*.
+
 ## Honesty rules (binding)
 
 1. **"Found nothing" ≠ "couldn't look."** If a search returned no relevant results, say "searched X, found nothing relevant." If a fetch was blocked, that goes under *Could not access*. Never let an access failure masquerade as absence of demand.
