@@ -31,13 +31,15 @@ Seven skills, roughly in the order you'd use them on a project.
 
 | Skill | What it does | Try |
 |---|---|---|
-| [`self-improve`](self-improve/) | An evidence-based retro on your own Claude Code usage that then fixes your skills. A stdlib script mines local transcripts (`~/.claude/projects`) for friction: corrections, interrupts, tool errors, retry loops, edit churn, cost outliers. Each finding cites session IDs and quotes and is assigned to a layer (skill instruction, trigger, tooling, project CLAUDE.md, habit, or environment). It proposes minimal diffs to the skills you own, applies only the ones you approve, and keeps a ledger so the next run checks whether the changes helped. Plugin and external skills get suggestions only. | *"Improve my skills from the last two weeks"* · *"Why does brand-studio keep failing?"* |
+| [`self-improve`](self-improve/) | A retro on your own Claude Code sessions that then fixes your skills, built to be more specific than `/insights`. A stdlib script reduces local transcripts (`~/.claude/projects`) to a compact digest of friction signals: corrections, interrupts, tool errors, retry loops, edit churn, cost outliers. It reads **every** session in the window, using Sonnet helpers for large windows, and reports patterns counted across sessions rather than a few dramatic chats. The report leads with *what keeps going wrong*. Each finding gives its recurrence ("5 of 10 sessions"), quoted evidence with session IDs, the root cause (skill instruction, trigger, tooling, project CLAUDE.md, habit, or environment), and an exact diff or a before/after prompt rewrite. It applies only the fixes you approve and logs them to `~/.claude/self-improve/LEDGER.md`, so the next run checks whether each one helped. Plugin and external skills get suggestions only. A 30-day run over ~50 sessions costs a few hundred thousand tokens, mostly on Sonnet. | *"/self-improve on the last 30 days"* · *"Why does brand-studio keep failing?"* |
 
 ### How they compose
 
 - `project-planner` runs `idea-research` for its research phase. `hackathon-planner` reuses parts of `idea-research` and `project-planner`'s stack guide.
 - `project-planner` and `hackathon-planner` hand the visual layer to `brand-studio`: project-planner adds a gated brand task before feature screens and a final audit pass.
 - Any existing `RESEARCH.md`, `PLAN.md`, or `BRAND.md` is read and reused rather than regenerated.
+- `self-improve` tunes all of the above from real usage: it edits their `SKILL.md` and reference files and records each change in a ledger.
+- Skills that fan out to subagents give each one a cheaper model (Sonnet or Haiku) and a search or turn budget. Opus is kept for judgment and final edits.
 - Every skill also works standalone.
 
 ## Installation
