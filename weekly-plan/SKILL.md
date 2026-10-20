@@ -7,7 +7,8 @@ description: >
   QUEUE.md, then writes WEEK.md with focus blocks per day, what each account and Codex should do,
   queue items for unattended runs in away windows, and auto PRs to review. Trigger on "plan my
   week", "weekly plan", "what should I work on this week", "Sunday planning", "plan around my
-  schedule", "how should I split work between accounts".
+  schedule", "how should I split work between accounts", "plan today", "set up the daily
+  check-in".
 ---
 
 # Weekly Plan Skill
@@ -60,6 +61,23 @@ it to one screen). Show the user the plan and the proposed queue items **before*
 - add the items with the `queue` skill (add mode) in each repo, and create or adjust routines with
   `queue` schedule mode;
 - update `TASKS.md` with confirmed changes only, preserving unrelated entries (re-read it first).
+
+## Daily mode
+
+Two parts, because cloud routines can't read Apple Calendar or the iCloud hub:
+
+- **Cloud check-in (6:00, every day, per account).** A read-only Haiku routine over the account's
+  repos (claude-papa: `GitHub/Research/*`; claude-beti: the personal repos) reports what overnight
+  runs did, what needs the user, and each repo's next step. It also starts that account's usage
+  window. To set it up or change it, use the `schedule` skill: update the account's existing 6:00
+  routine if there is one (list first; don't create a duplicate), with the prompt in
+  `${CLAUDE_SKILL_DIR}/references/checkin-prompt.md`, model `claude-haiku-5-5`, tools
+  `Bash, Read, Glob, Grep`, the Default environment, and one `sources` entry per repo. Run it once
+  with "run now" and read its log to confirm the repos cloned.
+- **Local "today" (when the user sits down, on request: "plan today", "what's today").** Read
+  today's row of `WEEK.md`, `calendar_week.sh 1`, and the latest check-in result if the user
+  pastes it. Reply in ≤ 10 lines: fixed events, the 1–3 outcomes for today with account/tool,
+  what to queue before the next away window. Only update `WEEK.md` if the user changes the plan.
 
 ## Rules
 

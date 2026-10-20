@@ -5,7 +5,8 @@ description: >
   confidence. Builds a private INTERVIEW.md per project from the actual code (pitch, architecture,
   one request traced through file:line, decisions and alternatives, verified numbers vs résumé
   claims, failure modes, scaling, likely questions with answers, and a list of parts the user may
-  not understand), then quizzes the user one question at a time and tracks weak spots. Trigger on
+  not understand), then quizzes the user one question at a time and tracks weak spots. Can publish a
+  recruiter-safe repo map to the portfolio site's skill map. Trigger on
   "deep dive into <project>", "prep me to talk about <project>", "interview prep for my projects",
   "quiz me on <project>", "what would an interviewer ask about this", "I don't understand my own
   code". For job-application messages use outreach; for code quality use code-reviewer.
@@ -48,6 +49,26 @@ regenerate. Résumé claims about the project: hub `PROFILE.md` (Professional ba
    behavioural STAR stories the project supports. Short model answers grounded in the notes.
 7. Ask the user the open Questions in one batch, write their answers in, then show the 30-second
    pitch and the weakest three areas.
+
+## Mode: publish (portfolio skill map)
+
+Offer this after a build, in one line; run it only on a yes. It writes the recruiter-safe subset
+of the notes to the website's `public/project-graph.json`
+(`~/GitHub/Personal/ikathuria.github.io`), which feeds the Dashboard's skill map.
+
+1. Entry key: the item's `id` in the site's `data.ts` if it is there; otherwise the repo name in
+   lowercase, plus `title`, `kind` (`project` | `paper` | `hackathon`) and `date`.
+2. Fields, all optional: `oneLiner` (the 30-second pitch cut to one sentence), `tags` (stack
+   tags beyond those already in `data.ts`), `map` (`components`: 3–6 `{name, role}` from the
+   walkthrough, and a one-line `flow` such as `upload → embed → retrieve → answer`), `github`,
+   `demo`.
+3. **Never publish:** Parts to understand, Limits, Questions for me, the Quiz log, anything
+   `unverified` or `contradicted`, private repo paths, or research results the user hasn't made
+   public (thesis and RA work stay off unless the user says so for that project).
+4. Add each new tag to `skills.ts` `tagAliases` (an existing skill if it fits; a new skill only
+   if it's a real, distinct technology), or the tag won't connect on the map.
+5. Show the user the entry as a diff, then run `npx tsc --noEmit && npm run build` in the site
+   repo. Commit, push and deploy only when the user asks (deploy is `npm run deploy`).
 
 ## Mode: quiz
 
