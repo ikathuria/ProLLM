@@ -4,7 +4,7 @@ Skills for creating projects with LLMs. Each top-level folder is a self-containe
 
 ## Skills
 
-Eleven skills, roughly in the order you'd use them on a project.
+Fourteen skills, roughly in the order you'd use them on a project.
 
 ### Plan
 
@@ -35,6 +35,9 @@ Eleven skills, roughly in the order you'd use them on a project.
 | [`handoff`](handoff/) | Ends a long or drifting session without losing anything. It writes a short `HANDOFF.md` (state, decisions, open threads, gotchas, key files, next step), syncs `PROJECT.md`, and gives you a one-line prompt for a fresh session. Long sessions re-read their whole history on every turn, so this is the biggest cost saver for multi-day work. | *"Wrap up, I'm switching to the paper draft"* |
 | [`long-run`](long-run/) | Launches long jobs (training, sweeps, evals) safely. It reviews the script, smoke-tests it end to end on a tiny input, estimates time and peak memory against the machine, adds checkpoints and resume, and runs the job detached. It then checks the log cheaply instead of polling from the main session. | *"Start the training run"* · *"Is my sweep still going?"* |
 | [`outreach`](outreach/) | Job-search messages: referral asks, recruiter replies, follow-ups, cold emails. It works from a private profile (`~/.claude/outreach/PROFILE.md`, built from your project files on first run) so you never re-explain your background. It keeps facts like work authorization current and logs what was sent and what got replies, using your job-search project's own tracker if you have one. | *"Ask Priya for a referral for these two roles"* |
+| [`project-deepdive`](project-deepdive/) | Interview prep for your own (often vibe-coded) projects. It maps the repo cheaply (Codex or a Sonnet agent), traces one real request through `file:line`, records decisions with alternatives, checks every résumé/README number (`verified` / `unverified` / `contradicted`), explains the parts you may not understand, and lists likely questions with grounded answers in a private `INTERVIEW.md`. Quiz mode asks one question at a time, grades against the code, and logs weak spots. | *"Prep me to talk about JobApply"* · *"Quiz me on AutoRedTeam"* |
+| [`queue`](queue/) | Coding while you're away. Each repo gets a `QUEUE.md` of small items, each with a goal, start files, a "done when" check and a cloud/local tag, plus a run protocol at the top so cloud runs (which don't see `~/.claude`) follow the same rules. Runs take one ready item, work on a `claude/auto-*` branch, run the check, push and open a draft PR with a report. Schedule mode creates cloud routines for your away windows; review mode summarises the auto PRs. | *"Queue this for tonight"* · *"Review the auto PRs"* |
+| [`weekly-plan`](weekly-plan/) | Plans the week around your fixed schedule and Apple Calendar (AppleScript, no connector), the task list, and each repo's `HANDOFF.md`/`QUEUE.md`. It writes a one-page `WEEK.md` with one outcome per block, what each Claude account, Codex, local GPU jobs and routines should do, and the auto PRs to review, then fills queues on approval. | *"Plan my week"* |
 
 ### Improve
 
@@ -50,6 +53,7 @@ Eleven skills, roughly in the order you'd use them on a project.
 - `self-improve` tunes all of the above from real usage: it edits their `SKILL.md` and reference files and records each change in a ledger.
 - Skills that fan out to subagents give each one a cheaper model (Sonnet or Haiku) and a search or turn budget. Opus is kept for judgment and final edits.
 - `handoff` is offered at task boundaries by the other skills (paper-reader after a review, project-planner between milestone batches); `long-run` uses `code-reviewer` or a no-context reviewer before launching; `critic` complements `code-reviewer` (code) and `idea-research` (market).
+- `weekly-plan` fills `queue` items and schedules them; `queue` hands GPU items to `long-run`; `project-deepdive` uses Codex for the cheap repo map.
 - Every skill also works standalone.
 
 ## Installation
