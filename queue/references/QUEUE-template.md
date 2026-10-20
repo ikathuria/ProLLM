@@ -14,8 +14,9 @@ Tasks Claude can do unattended. Add items with the `queue` skill (or by hand, us
 5. Run its **Done when** check. If it fails, fix and retry at most twice.
 6. Stop at the first of: check passes; check still fails after two fixes; the item needs a decision
    from the user; it needs a secret, credential or paid service.
-7. Commit in small steps, push the branch, open a **draft** PR titled `auto: <item title>` whose body
-   is the report:
+7. Commit in small steps, push the branch, and open a **draft** PR titled `auto: <item title>` whose
+   body is the report. If you can't open a PR (no `gh` auth), put the report in the last commit
+   message instead and leave the PR to the user:
    ```
    Item: <title>    Result: done | partial | blocked
    Check: <command> → <pass/fail, key output line>
