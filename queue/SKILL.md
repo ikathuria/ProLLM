@@ -35,7 +35,9 @@ user MCP servers). Everything a run needs must be in the repo: the protocol live
 3. Refuse or mark `needs-me` instead of queueing when the item needs a design decision, a research
    judgment (choosing a method, interpreting a result, writing claims), credentials, paid services,
    or anything advisor-facing. Say why in one line.
-4. Order by value; mark the top 1–3 `ready`. Show the user the added items in one block; don't
+4. Order by value; mark the top 1–3 `ready`. (Runs skip items that already have an auto branch;
+   after its PR is merged or closed, set the item to `done (#PR)` or back to `ready` on the default
+   branch.) Show the user the added items in one block; don't
    rewrite existing ones unasked. Commit `QUEUE.md` so cloud runs see it.
 
 ## Mode: run
